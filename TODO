@@ -1,0 +1,13 @@
+As of 06-19-2019
+-----------------------------------------------------------------------
+-> Refactor code into seperate files and add to src directory
+-> Add test scripts for library functions
+-> Fix sharing/recovering scheme
+-> Connect sharing code to React code
+-> Redesign React code for a better presentation
+
+Future design considerations
+-----------------------------------------------------------------------
+-> Add functionality to encrypt each share with the sharer's public key
+or add some other way to securely and pragmatically disseminate shares. 
+

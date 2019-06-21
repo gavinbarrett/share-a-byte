@@ -1,16 +1,17 @@
 <!doctype html>
-<html>
+<html lang='en'>
+	<head>
 	<link rel="stylesheet" type="text/css" href="landing.css">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,900" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<!-- include scripts for React -->
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	</head>
+	
 	<body onload="w()">
-
-	<div id='headingContainer'>
-	<div id='heading'>
-	</div>
-	</div>
-
+	<div id="root"></div>
+	<script type="module" src="landing.js"></script>
 	<script src="write.js"></script>
 	</body>
 </html>

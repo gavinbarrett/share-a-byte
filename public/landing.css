@@ -1,4 +1,7 @@
-body {
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
         background: linear-gradient(#1960d3, #09347a);
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -9,8 +12,49 @@ body {
 	font-family: Inconsolata;
 }
 
+#subheader {
+	color: #000080;
+	font-family: Inconsolata;
+	font-size: 3vw;	
+}
+
 #headingContainer {
+	height: 30vw;
+	font-size: 8vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.button {
+	height: 20%;
+	width: 30%;
+	display: flex;
+	font-family: Inconsolata;
+	font-size: 27px;
+	text-align: center;
+	vertical-align: middle;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	background-color: #1960d3;
+	border-radius: 7px;
+}
+
+#selectionBox {
+	width: 50vw;
+	height: 30vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	background-color: white;
+	border-radius: 15px;
+}
+
+#selectionBoxContainer {
 	display: flex;
 	justify-content: center;
-	font-size: 5vw;
 }
+

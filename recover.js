@@ -45,11 +45,9 @@ function recover(xs, ys, field) {
 
 		for (let i = 0; i < ys.length; i++) {
 			let s = interpolate(0, xs, ys[i], field);
-			secret += " ";
-			secret += s;
-			console.log(secret);
+			secret += String.fromCharCode(s);
 		}
-		console.log('SECRET', secret);
+		console.log('The secret is: ', secret);
 }
 
 module.exports = {

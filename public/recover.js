@@ -1,17 +1,8 @@
 let mod = require('./number.js').mod;
 let mod_inv = require('./number.js').mod_inv;
 
-/*
- *
- * function normalize_hex(hexstring) {
-	// return an array of bytes from a hexstring
-	return hexstring.match(/.{2}/g);
-}
- *
- * */
-
 function return_decimal(hexstring) {
-	// return value associated with hex byte
+	/* return value associated with hex byte */
 	if (hexstring == 'za')
 		return 256;
 	else if (hexstring == 'zb')
@@ -21,6 +12,7 @@ function return_decimal(hexstring) {
 }
 
 function evaluate_poly(x, xi, xs, field) {
+	/* return value of polynomial at zero */
 		let numer = 1;
 		let denom = 1;
 		for (let i = 0; i < xs.length; i++) {
@@ -33,6 +25,7 @@ function evaluate_poly(x, xi, xs, field) {
 }
 
 function interpolate(x, xs, ys, field) {
+	/* return interpolation value for the subsecret */
 		let secret = 0;
 		for (let i = 0; i < xs.length; i++)
 				secret += mod(field + ys[i] * evaluate_poly(x, i, xs, field), field);
@@ -40,7 +33,7 @@ function interpolate(x, xs, ys, field) {
 }
 
 function recover(xs, ys, field) {
-		// interpolate polynomial at 0
+		/* recover the secret */
 		let secret = '';
 
 		for (let i = 0; i < ys.length; i++) {

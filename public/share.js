@@ -1,6 +1,7 @@
 import {mod} from './number.js';
 
 function pad(str) {
+	/* pad a binary string to a multiple of eight */
         let n = str.length % 8;
         if (n == 0)
                 return str;
@@ -10,10 +11,10 @@ function pad(str) {
 }
 
 function encode_secret(secret) {
+	/* encode secret into an integer */
         let s = "";
         for (let i = 0; i < secret.length; i++) {
                 let x = secret[i].charCodeAt(0).toString(2);
-                //console.log('SECRET: ' + secret[i].charCodeAt(0));
 		let y = parseInt(x, 2);
                 y = String.fromCharCode(y);
 		s += pad(secret[i].charCodeAt(0).toString(2));
@@ -22,6 +23,7 @@ function encode_secret(secret) {
 }
 
 function split_secret(n, k, field, coeffs, secret) {
+	/* generate shares from all of the coefficients  */
 	let shares = [];
 	let s = 0;
 	for (let i = 0; i < n; i++) {
@@ -32,14 +34,15 @@ function split_secret(n, k, field, coeffs, secret) {
 }
 
 function horners(x, k, field, poly, secret) {
+	/* evaluate polynomial with horner's method */
 	let result = poly[0];
-	// evaluate polynomial with horner's method
 	for(let i = 1; i < k; i++)
 		result = mod(mod(result * x, field) + poly[i], field);
 	return result;
 }
 
 function gen_coeff(k, field) {
+	/* generate random coefficients */
 	let coeffs = [];
 	for (let i = 0; i < k-1; i++) {
 		let r = 0;
@@ -52,7 +55,7 @@ function gen_coeff(k, field) {
 }
 
 export function share(n, k, plaintext) {
-
+	/* return shares for the plaintext */
 	if (k > n) {
 		console.log('threshold too large');
 		return;
@@ -61,7 +64,6 @@ export function share(n, k, plaintext) {
 	let field = 257;
 	for (let i = 0; i < plaintext.length; i++) {
 		let x = encode_secret(plaintext[i]);
-		//console.log(x);
 		let coeffs = gen_coeff(k, field);
 		coeffs.unshift(x);
 		let shares = split_secret(n,k,field,coeffs.reverse(),x);
@@ -69,15 +71,8 @@ export function share(n, k, plaintext) {
 			if (s[j] == undefined)
 				s[j] = "";
 			let share = parseInt(shares[j], 10);
-			s[j] += share + " ";
+			s[j] += String.fromCharCode(share);
 		}
 	}
-	/*
-	console.log(s);
-	console.log('Shares: ');
-	for (let z = 0; z < s.length; z++) {
-		console.log(s[z]);
-	}
-	*/
 	return s;
 }

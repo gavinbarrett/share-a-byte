@@ -1,18 +1,18 @@
 export function mod(num, prime) {
-		// computes the modulus of a number with respect to 257
-		let n = num % prime;
-		if (n < 0)
-				n = prime + n;
-		return n;
+	/* computes the modulus of a number */
+	let n = num % prime;
+	if (n < 0)
+		n = prime + n;
+	return n;
 }
 
 function egcd(a,b,x,y) {
+	/* find the greatest common denominator */
 	if (a == 0) {
 		x = 0;
 		y = 1;
 		return [b,x,y];
 	}
-
 	// returns array of three values
 	let array = egcd(mod(b,a), a, x, y);
 	let g = array[0];
@@ -24,6 +24,7 @@ function egcd(a,b,x,y) {
 }
 
 function mod_inv(k, prime) {
+	/* return the mod inverse */
 	let array = egcd(k, prime, 0, 0);
 	let g = array[0];
 	let x = array[1];

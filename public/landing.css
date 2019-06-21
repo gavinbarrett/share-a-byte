@@ -1,0 +1,16 @@
+body {
+        background: linear-gradient(#1960d3, #09347a);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+}
+
+#heading {
+	color: white;
+	font-family: Inconsolata;
+}
+
+#headingContainer {
+	display: flex;
+	justify-content: center;
+	font-size: 5vw;
+}

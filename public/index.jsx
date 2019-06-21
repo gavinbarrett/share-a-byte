@@ -1,41 +1,14 @@
+import {share} from './share.js';
 "use strict";
-
-function pad(str) {
-	let n = str.length % 8;
-	if (n == 0)
-		return str;
-	let z = "0";
-	let newStr = str + z.repeat((8 - n));
-	return newStr+" "+newStr.length;
-}
-
-function encode_secret(secret) {
-	let s = "";
-	for (let i = 0; i < secret.length; i++) {
-		let x = secret[i].charCodeAt(0).toString(2);
-		alert(pad(x));
-		let y = parseInt(x, 2);
-		y = String.fromCharCode(y);
-		alert(y);
-		s += secret[i].charCodeAt(0).toString(2);
-		alert(secret[i].charCodeAt(0).toString(2));
-
-	}
-	return s;
-}
 
 function displaySecret() {
 	let secret = document.getElementById('secret').value;
 	let display = document.getElementById('sec');
-
+	alert(secret);
+	let a = share(3,3,secret);
+	alert(a);
 	let display2 = document.getElementById('secpad');
-
-	let s = encode_secret(secret);
-	
-	display.textContent = s + " " + s.length;
-	display2.textContent = pad(s);
 }
-
 
 class Body extends React.Component {
 	
@@ -53,7 +26,6 @@ writeTitle() {
 	
 	constructor(props) {
 		super(props);
-		this.setState({title: 'hello',});
 		this.sub = (event) => {
 			if (event.charCode == 13) {
 				displaySecret();

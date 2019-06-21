@@ -1,5 +1,5 @@
-const share = require('./share.js').share;
-const recover = require('./recover').recover;
+const share = require('./public/share.js').share;
+const recover = require('./public/recover').recover;
 
 let xs = [1,2];
 

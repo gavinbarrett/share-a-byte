@@ -6,6 +6,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/* Below is code for the landing page */
 function Heading() {
 	return React.createElement("div", { id: "heading" });
 }
@@ -27,18 +28,18 @@ function HeadingContainer(props) {
 	);
 }
 
-function Share(props) {
+function ShareButton(props) {
 	return React.createElement(
 		"div",
-		{ "class": "button" },
+		{ "class": "button", onClick: SharePage },
 		props.share
 	);
 }
 
-function Recover(props) {
+function RecoverButton(props) {
 	return React.createElement(
 		"div",
-		{ "class": "button" },
+		{ "class": "button", onClick: RecoverPage },
 		props.recover
 	);
 }
@@ -50,8 +51,8 @@ function SelectionBox(props) {
 		React.createElement(
 			"div",
 			{ id: "selectionBox" },
-			React.createElement(Share, { share: props.share }),
-			React.createElement(Recover, { recover: props.recover })
+			React.createElement(ShareButton, { share: props.share }),
+			React.createElement(RecoverButton, { recover: props.recover })
 		)
 	);
 }
@@ -100,3 +101,127 @@ var LandingPage = function (_React$Component) {
 }(React.Component);
 
 ReactDOM.render(React.createElement(LandingPage, null), document.getElementById('root'));
+
+/* 
+ *
+ * Below is code for the Sharing page 
+ *
+ * */
+
+function SharePage() {
+	ReactDOM.render(React.createElement(Share, null), document.getElementById('root'));
+}
+
+function ShareHeader(props) {
+	return React.createElement(
+		React.Fragment,
+		null,
+		React.createElement(
+			"div",
+			{ "class": "shareRecoverHeader" },
+			props.share
+		)
+	);
+}
+
+function ShareHeaderContainer(props) {
+	return React.createElement(
+		React.Fragment,
+		null,
+		React.createElement(
+			"div",
+			{ "class": "shareRecoverHeaderContainer" },
+			React.createElement(ShareHeader, { share: props.share })
+		)
+	);
+}
+
+var Share = function (_React$Component2) {
+	_inherits(Share, _React$Component2);
+
+	function Share(proper) {
+		_classCallCheck(this, Share);
+
+		var _this2 = _possibleConstructorReturn(this, (Share.__proto__ || Object.getPrototypeOf(Share)).call(this, proper));
+
+		_this2.state = {
+			share: "S/hare"
+		};
+		return _this2;
+	}
+
+	_createClass(Share, [{
+		key: "render",
+		value: function render() {
+			return React.createElement(
+				React.Fragment,
+				null,
+				React.createElement(ShareHeaderContainer, { share: this.state.share })
+			);
+		}
+	}]);
+
+	return Share;
+}(React.Component);
+
+/* 
+ *
+ * Below is the code for the Recovery page 
+ *
+ * */
+
+function RecoverPage() {
+	ReactDOM.render(React.createElement(Recover, null), document.getElementById('root'));
+}
+
+function RecoverHeader(props) {
+	return React.createElement(
+		React.Fragment,
+		null,
+		React.createElement(
+			"div",
+			{ "class": "shareRecoverHeader" },
+			props.recover
+		)
+	);
+}
+
+function RecoverHeaderContainer(props) {
+	return React.createElement(
+		React.Fragment,
+		null,
+		React.createElement(
+			"div",
+			{ "class": "shareRecoverHeaderContainer" },
+			React.createElement(RecoverHeader, { recover: props.recover })
+		)
+	);
+}
+
+var Recover = function (_React$Component3) {
+	_inherits(Recover, _React$Component3);
+
+	function Recover(props) {
+		_classCallCheck(this, Recover);
+
+		var _this3 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
+
+		_this3.state = {
+			recover: "/Recover"
+		};
+		return _this3;
+	}
+
+	_createClass(Recover, [{
+		key: "render",
+		value: function render() {
+			return React.createElement(
+				React.Fragment,
+				null,
+				React.createElement(RecoverHeaderContainer, { recover: this.state.recover })
+			);
+		}
+	}]);
+
+	return Recover;
+}(React.Component);

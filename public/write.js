@@ -1,5 +1,5 @@
 let message = "S/ecretF/racture";
-let speed = 50;
+let speed = 60;
 let i = 0;
 
 function w() {

@@ -58,3 +58,17 @@ html, body {
 	justify-content: center;
 }
 
+
+
+.shareRecoverHeader {
+	font-size: 20vw;
+	color: white;
+	opacity: 0.5;
+	font-family: Inconsolata;
+}
+
+.shareRecoverHeaderContainer {
+	display: flex;
+	justify-content: center;	
+}
+

@@ -6,23 +6,24 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+import { share } from './share.js';
 /* Below is code for the landing page */
 function Heading() {
-	return React.createElement("div", { id: "heading" });
+	return React.createElement('div', { id: 'heading' });
 }
 
 function Subheader(props) {
 	return React.createElement(
-		"div",
-		{ id: "subheader" },
+		'div',
+		{ id: 'subheader' },
 		props.sub
 	);
 }
 
 function HeadingContainer(props) {
 	return React.createElement(
-		"div",
-		{ id: "headingContainer" },
+		'div',
+		{ id: 'headingContainer' },
 		React.createElement(Heading, null),
 		React.createElement(Subheader, { sub: props.sub })
 	);
@@ -30,16 +31,16 @@ function HeadingContainer(props) {
 
 function ShareButton(props) {
 	return React.createElement(
-		"div",
-		{ "class": "button", onClick: SharePage },
+		'div',
+		{ 'class': 'button', onClick: SharePage },
 		props.share
 	);
 }
 
 function RecoverButton(props) {
 	return React.createElement(
-		"div",
-		{ "class": "button", onClick: RecoverPage },
+		'div',
+		{ 'class': 'button', onClick: RecoverPage },
 		props.recover
 	);
 }
@@ -49,8 +50,8 @@ function SelectionBox(props) {
 		React.Fragment,
 		null,
 		React.createElement(
-			"div",
-			{ id: "selectionBox" },
+			'div',
+			{ id: 'selectionBox' },
 			React.createElement(ShareButton, { share: props.share }),
 			React.createElement(RecoverButton, { recover: props.recover })
 		)
@@ -62,8 +63,8 @@ function SelectionBoxContainer(props) {
 		React.Fragment,
 		null,
 		React.createElement(
-			"div",
-			{ id: "selectionBoxContainer" },
+			'div',
+			{ id: 'selectionBoxContainer' },
 			React.createElement(SelectionBox, { share: props.share, recover: props.recover })
 		)
 	);
@@ -86,7 +87,7 @@ var LandingPage = function (_React$Component) {
 	}
 
 	_createClass(LandingPage, [{
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
 				React.Fragment,
@@ -117,8 +118,8 @@ function ShareHeader(props) {
 		React.Fragment,
 		null,
 		React.createElement(
-			"div",
-			{ "class": "shareRecoverHeader" },
+			'div',
+			{ 'class': 'shareRecoverHeader' },
 			props.share
 		)
 	);
@@ -129,11 +130,17 @@ function ShareHeaderContainer(props) {
 		React.Fragment,
 		null,
 		React.createElement(
-			"div",
-			{ "class": "shareRecoverHeaderContainer" },
+			'div',
+			{ 'class': 'shareRecoverHeaderContainer' },
 			React.createElement(ShareHeader, { share: props.share })
 		)
 	);
+}
+
+function shareSecret() {
+	var secret = document.getElementById('secretsub');
+	var shares = share(3, 3, 'hey');
+	alert(shares);
 }
 
 var Share = function (_React$Component2) {
@@ -147,16 +154,24 @@ var Share = function (_React$Component2) {
 		_this2.state = {
 			share: "S/hare"
 		};
+		_this2.sub = function (event) {
+			if (event.charCode == 13) shareSecret();
+		};
 		return _this2;
 	}
 
 	_createClass(Share, [{
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement(ShareHeaderContainer, { share: this.state.share })
+				React.createElement(ShareHeaderContainer, { share: this.state.share }),
+				React.createElement(
+					'div',
+					{ id: 'secretsubContainer' },
+					React.createElement('input', { type: 'text', id: 'secretsub', onKeyPress: this.sub, placeholder: 'enter secret here' })
+				)
 			);
 		}
 	}]);
@@ -179,8 +194,8 @@ function RecoverHeader(props) {
 		React.Fragment,
 		null,
 		React.createElement(
-			"div",
-			{ "class": "shareRecoverHeader" },
+			'div',
+			{ 'class': 'shareRecoverHeader' },
 			props.recover
 		)
 	);
@@ -191,8 +206,8 @@ function RecoverHeaderContainer(props) {
 		React.Fragment,
 		null,
 		React.createElement(
-			"div",
-			{ "class": "shareRecoverHeaderContainer" },
+			'div',
+			{ 'class': 'shareRecoverHeaderContainer' },
 			React.createElement(RecoverHeader, { recover: props.recover })
 		)
 	);
@@ -213,7 +228,7 @@ var Recover = function (_React$Component3) {
 	}
 
 	_createClass(Recover, [{
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
 				React.Fragment,

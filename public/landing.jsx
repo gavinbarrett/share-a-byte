@@ -1,3 +1,4 @@
+import {share} from './share.js';
 /* Below is code for the landing page */
 function Heading() {
 	return(<div id='heading'>
@@ -97,16 +98,29 @@ function ShareHeaderContainer(props) {
 	</React.Fragment>);
 }
 
+function shareSecret() {
+	let secret = document.getElementById('secretsub');
+	let shares = share(3,3,'hey');
+	alert(shares);
+}
+
 class Share extends React.Component {
 	constructor(proper) {
 		super(proper);
 		this.state = {
 			share: "S/hare",
 		};
+		this.sub = (event) => {
+			if (event.charCode == 13)
+				shareSecret();
+		}
 	}
 	render() {
-		return(<React.Fragment>
+	return(<React.Fragment>
 	<ShareHeaderContainer share={this.state.share}/>
+	<div id="secretsubContainer">
+	<input type="text" id="secretsub" onKeyPress={this.sub} placeholder="enter secret here"></input></div>
+	
 	</React.Fragment>);
 	}
 }

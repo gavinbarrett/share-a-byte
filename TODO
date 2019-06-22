@@ -1,6 +1,7 @@
 As of 06-19-2019
 -----------------------------------------------------------------------
 -> Connect sharing code to React code
+	-> Merge shareTest/recoverTest code into public/share.js, public/recover.js
 -> Redesign React code for a better presentation
 	-> Create renders for the Share and recover pages
 	-> Redesign tablet and mobile views

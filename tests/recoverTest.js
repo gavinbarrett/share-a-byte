@@ -1,5 +1,5 @@
-let mod = require('./number.js').mod;
-let mod_inv = require('./number.js').mod_inv;
+let mod = require('../public/number.js').mod;
+let mod_inv = require('../public/number.js').mod_inv;
 
 function evaluate_poly(x, xi, xs, field) {
 	/* return value of polynomial at zero */
@@ -22,28 +22,8 @@ function interpolate(x, xs, ys, field) {
 		return mod(secret, field);
 }
 
-function process_shares(a) {
-	/* reorganize shares in a a format we can process */
-
-	// this function's parameter ys is an array of hex strings
-        let c = [];
-        for (let i = 0; i < a.length; i++) {
-                let x = a[i].match(/.{1,2}/g);
-                for (let j = 0; j < x.length; j++) {
-                        if (c[j] == undefined)
-                                c[j] = [];
-                        if (c[j][i] == undefined)
-                                c[j][i] = 0;
-                        c[j][i] = return_decimal(x[j]);
-                }
-        }
-        return c;
-}
-
 function recover(xs, ys, field) {
 		/* recover the secret */
-		
-		let shares = process_shares(ys);	
 		let secret = '';
 
 		for (let i = 0; i < ys.length; i++) {
@@ -56,3 +36,4 @@ function recover(xs, ys, field) {
 module.exports = {
 	recover: recover,
 };
+

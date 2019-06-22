@@ -1,5 +1,5 @@
-import {mod} from './number.js';
-import {return_hex} from './number.js';
+let mod = require('../public/number.js').mod;
+let return_hex = require('../public/number.js').return_hex;
 
 function pad(str) {
 	/* pad a binary string to a multiple of eight */
@@ -78,3 +78,4 @@ export function share(n, k, plaintext) {
 	}
 	return s;
 }
+

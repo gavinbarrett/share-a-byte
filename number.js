@@ -1,4 +1,4 @@
-export function mod(num, prime) {
+function mod(num, prime) {
 	/* computes the modulus of a number */
 	let n = num % prime;
 	if (n < 0)
@@ -37,7 +37,7 @@ function mod_inv(k, prime) {
 	}
 }
 
-export function return_decimal(hexstring) {
+function return_decimal(hexstring) {
         /* return value associated with hex byte */
         if (hexstring == 'za')
                 return 256;
@@ -47,7 +47,7 @@ export function return_decimal(hexstring) {
                 return parseInt(hexstring, 16);
 }
 
-export function return_hex(number) {
+function return_hex(number) {
 	if (number == 257)
 		return 'zb';
 	else if (number == 256)

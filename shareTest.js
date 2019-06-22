@@ -1,5 +1,26 @@
-import {mod} from './number.js';
-import {return_hex} from './number.js';
+function mod(num, prime) {
+	/* computes the modulus of a number */
+	let n = num % prime;
+	if (n < 0)
+		n = prime + n;
+	return n;
+}
+
+function return_hex(number) {
+	if (number == 257)
+		return 'zb';
+	else if (number == 256)
+		return 'za';
+	else {
+		
+		let hex = number.toString(16);
+		if (hex.length == 1) {
+			//console.log('appending 0 to', hex);
+			return '0' + hex;
+		}
+		return hex;
+	}
+}
 
 function pad(str) {
 	/* pad a binary string to a multiple of eight */
@@ -55,7 +76,7 @@ function gen_coeff(k, field) {
 	return coeffs;
 }
 
-export function share(n, k, plaintext) {
+function share(n, k, plaintext) {
 	/* return shares for the plaintext */
 	if (k > n) {
 		console.log('threshold too large');
@@ -76,5 +97,12 @@ export function share(n, k, plaintext) {
 			s[j] += return_hex(share);
 		}
 	}
+	console.log(s);
 	return s;
 }
+
+module.exports = {
+	share: share,
+	mod: mod,
+};
+

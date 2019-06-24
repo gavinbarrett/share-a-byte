@@ -51,7 +51,7 @@ class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			sub: "a byte-sized secret sharing scheme",
+			sub: "a byte-sized secret sharing solution",
 			share: "share a secret",
 			recover: "recover a secret",
 		};
@@ -99,9 +99,9 @@ function ShareHeaderContainer(props) {
 }
 
 function shareSecret() {
-	let secret = document.getElementById('secretsub');
-	let shares = share(3,3,'hey');
-	alert(shares);
+	let secret = document.getElementById('secretsub').value;
+	let shares = share(3,3, secret);
+	return shares;
 }
 
 class Share extends React.Component {
@@ -111,16 +111,29 @@ class Share extends React.Component {
 			share: "S/hare",
 		};
 		this.sub = (event) => {
-			if (event.charCode == 13)
-				shareSecret();
+			if (event.charCode == 13) {
+				let n = document.getElementById('shareNumInput');
+				let t = document.getElementById('threshold');
+				if (!n || !t) {
+					alert('please add proper fields');
+					return;
+				}
+				let shares = shareSecret();
+				let out = document.getElementById('share-output');
+				console.log(shares);
+				out.textContent = shares;
+			}
 		}
 	}
 	render() {
 	return(<React.Fragment>
 	<ShareHeaderContainer share={this.state.share}/>
 	<div id="secretsubContainer">
+	<input type="text" id="shareNumInput" placeholder="enter number of shares here"></input>
+	<input type="text" id="threshold" placeholder="enter the threshold here"></input>
 	<input type="text" id="secretsub" onKeyPress={this.sub} placeholder="enter secret here"></input></div>
-	
+	<div id="share-output">
+	</div>
 	</React.Fragment>);
 	}
 }
@@ -152,16 +165,100 @@ function RecoverHeaderContainer(props) {
 	</React.Fragment>);
 }
 
+function ShareQuery(props) {
+	return(<React.Fragment>
+	<div id="shareQuery">{props.query}</div>
+	</React.Fragment>);
+}
+
+function ShareQueryContainer(props) {
+	return(<React.Fragment>
+	<div id="shareQueryContainer">
+	<ShareQuery query={props.query} />
+	<ShareNum />
+	</div>
+	</React.Fragment>);
+}
+
+function generate_divs() {
+	let n = document.getElementById('shareNum').value;
+	//FIXME: be sure to parse inputs!!
+	return parseInt(n, 10);
+}
+
+class Generated extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+	let elements = ['one','two','three'];
+	let items = [];
+
+	for (let i = 0; i < elements.length; i++) {
+		items.push(
+			<Generate_Divs child={props.message}/>
+		);
+	}
+
+	return(<React.Fragment>
+	<Recover />
+	<div>
+	{items}
+	</div>
+	</React.Fragment>);
+	}
+}
+
+class ShareNum extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			message: "hey",
+		};
+		
+		this.num = (event) => {
+			if (event.charCode == 13) {
+				let n = generate_divs();
+				// FIXME: generate new divs
+				this.setState({generated: <Generate_Divs child={this.state.message} />});
+				console.log('setState called');
+				/*this.setState({key: <Generate_Divs child={this.state.message}/>});*/
+
+				/*ReactDOM.render(<Generated message={i+1} />, document.getElementById('root'));*/
+			}
+		}
+
+	}
+
+
+	render() {
+		return(<React.Fragment>
+		<input id="shareNum" onKeyPress={this.num}></input>
+		</React.Fragment>);
+	}
+}
+
+function Generate_Divs(props) {
+	return(<React.Fragment>
+	<div>{props.child}</div>
+	</React.Fragment>);	
+}
+
 class Recover extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			recover: "/Recover",
+			query: "enter the number of shares",
+			message: "hey",
+			divisors: [],
 		};
 	}
 	render() {
 		return(<React.Fragment>
 		<RecoverHeaderContainer recover={this.state.recover}/>
+		<ShareQueryContainer query={this.state.query}/>
 		</React.Fragment>);
 	}
 }

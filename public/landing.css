@@ -32,7 +32,7 @@ html, body {
 	width: 30%;
 	display: flex;
 	font-family: Inconsolata;
-	font-size: 27px;
+	font-size: 50%;
 	text-align: center;
 	vertical-align: middle;
 	justify-content: center;
@@ -72,15 +72,67 @@ html, body {
 	justify-content: center;	
 }
 
-#secretsub {
+#shareNumInput {
 	width: 40%;
-	height: 70%;
+	height: 5vh;
+	text-align: center;
+	font-size: 45px;
 	border-radius: 15px;
 
 }
 
+#threshold {
+	width: 40%;
+	height: 5vh;
+	text-align: center;
+	font-size: 45px;
+	border-radius: 15px;
+}
+
+#secretsub {
+	width: 40%;
+	height: 20vh;
+	text-align: center;
+	font-size: 45px;
+	border-radius: 15px;
+}
+
 #secretsubContainer {
 	display: flex;
+	width: 100vw;
+	flex-direction: column;
 	justify-content: center;
+	align-items: center;
+}
+
+
+
+#shareQuery {
+	display: flex;
+	font-family: Inconsolata;
+	font-size: 45px;
+	color: #add8e6;
+	justify-content: center;
+}
+
+#shareQueryContainer {
+	display: flex;
+	width: 100vw;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#share-output {
+	display: flex;
+	height: 100vh;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	color: white;
+}
+
+#shareNum {
+
 }
 

@@ -22,6 +22,16 @@ function interpolate(x, xs, ys, field) {
 		return mod(secret, field);
 }
 
+function return_decimal(hexstring) {
+        /* return value associated with hex byte */
+        if (hexstring == 'za')
+                return 256;
+        else if (hexstring == 'zb')
+                return 257;
+        else
+                return parseInt(hexstring, 16);
+}
+
 function process_shares(a) {
 	/* reorganize shares in a a format we can process */
 
@@ -47,10 +57,11 @@ function recover(xs, ys, field) {
 		let secret = '';
 
 		for (let i = 0; i < ys.length; i++) {
-			let s = interpolate(0, xs, ys[i], field);
+			let s = interpolate(0, xs, shares[i], field);
 			secret += String.fromCharCode(s);
 		}
-		console.log('The secret is: ', secret);
+		//console.log('The secret is: ', secret);
+		return secret;
 }
 
 module.exports = {

@@ -32,7 +32,7 @@ function HeadingContainer(props) {
 function ShareButton(props) {
 	return React.createElement(
 		'div',
-		{ className: 'button', onClick: SharePage },
+		{ 'class': 'button', onClick: SharePage },
 		props.share
 	);
 }
@@ -40,7 +40,7 @@ function ShareButton(props) {
 function RecoverButton(props) {
 	return React.createElement(
 		'div',
-		{ className: 'button', onClick: RecoverPage },
+		{ 'class': 'button', onClick: RecoverPage },
 		props.recover
 	);
 }
@@ -119,7 +119,7 @@ function ShareHeader(props) {
 		null,
 		React.createElement(
 			'div',
-			{ className: 'shareRecoverHeader' },
+			{ 'class': 'shareRecoverHeader' },
 			props.share
 		)
 	);
@@ -247,7 +247,7 @@ function ShareQueryContainer(props) {
 			'div',
 			{ id: 'shareQueryContainer' },
 			React.createElement(ShareQuery, { query: props.query }),
-			React.createElement(ShareNum, { func: props.func })
+			React.createElement(ShareNum, null)
 		)
 	);
 }
@@ -306,14 +306,17 @@ var ShareNum = function (_React$Component4) {
 		};
 
 		_this4.num = function (event) {
-			var x = document.getElementById('shareNum').value;
-			if (!x || event.charCode) {
-				return;
-			}
-			if (!isNaN(x) && x != "") {
-				props.func(0, []);
+			if (event.charCode == 13) {
+				var n = generate_divs();
+				// FIXME: generate new divs
+				_this4.setState({ generated: React.createElement(Generate_Divs, { child: _this4.state.message }) });
+				console.log('setState called');
+				/*this.setState({key: <Generate_Divs child={this.state.message}/>});*/
+
+				/*ReactDOM.render(<Generated message={i+1} />, document.getElementById('root'));*/
 			}
 		};
+
 		return _this4;
 	}
 
@@ -323,7 +326,7 @@ var ShareNum = function (_React$Component4) {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement('input', { id: 'shareNum', onKeyUp: this.num })
+				React.createElement('input', { id: 'shareNum', onKeyPress: this.num })
 			);
 		}
 	}]);
@@ -343,14 +346,6 @@ function Generate_Divs(props) {
 	);
 }
 
-function Node() {
-	return React.createElement(
-		'div',
-		{ className: 'field' },
-		React.createElement('input', { type: 'text', className: 'inputField', placeholder: 'enter your share here' })
-	);
-}
-
 var Recover = function (_React$Component5) {
 	_inherits(Recover, _React$Component5);
 
@@ -363,41 +358,19 @@ var Recover = function (_React$Component5) {
 			recover: "/Recover",
 			query: "enter the number of shares",
 			message: "hey",
-			fields: []
+			divisors: []
 		};
-		_this5.addItems = _this5.addItems.bind(_this5);
 		return _this5;
 	}
 
 	_createClass(Recover, [{
-		key: 'addItems',
-		value: function addItems(i, a) {
-			var n = document.getElementById('shareNum').value;
-			if (i == n) {
-				this.setState(function (state, props) {
-					return {
-						fields: a
-					};
-				});
-				return;
-			}
-			i++;
-			a.push(React.createElement(Node, { key: i }));
-			setTimeout(this.addItems(i, a), 0);
-		}
-	}, {
 		key: 'render',
 		value: function render() {
 			return React.createElement(
 				React.Fragment,
 				null,
 				React.createElement(RecoverHeaderContainer, { recover: this.state.recover }),
-				React.createElement(ShareQueryContainer, { query: this.state.query, func: this.addItems.bind(this, 0, []) }),
-				React.createElement(
-					'div',
-					{ id: 'fieldContainer' },
-					this.state.fields
-				)
+				React.createElement(ShareQueryContainer, { query: this.state.query })
 			);
 		}
 	}]);

@@ -19,13 +19,13 @@ function HeadingContainer(props) {
 }
 
 function ShareButton(props) {
-	return(<div className="button" onClick={SharePage}>
+	return(<div class="button" onClick={SharePage}>
 		{props.share}
 	</div>);
 }
 
 function RecoverButton(props) {
-	return(<div className="button" onClick={RecoverPage}>
+	return(<div class="button" onClick={RecoverPage}>
 		{props.recover}
 	</div>);
 }
@@ -84,7 +84,7 @@ function SharePage() {
 
 function ShareHeader(props) {
 	return(<React.Fragment>
-		<div className="shareRecoverHeader">
+		<div class="shareRecoverHeader">
 		{props.share}
 		</div>
 	</React.Fragment>);
@@ -175,7 +175,7 @@ function ShareQueryContainer(props) {
 	return(<React.Fragment>
 	<div id="shareQueryContainer">
 	<ShareQuery query={props.query} />
-	<ShareNum func={props.func} />
+	<ShareNum />
 	</div>
 	</React.Fragment>);
 }
@@ -218,19 +218,23 @@ class ShareNum extends React.Component {
 		};
 		
 		this.num = (event) => {
-			let x = document.getElementById('shareNum').value;
-			if (!x || event.charCode) {
-				return;
-			}
-			if (!isNaN(x) && x != "") {
-				props.func(0, []);
+			if (event.charCode == 13) {
+				let n = generate_divs();
+				// FIXME: generate new divs
+				this.setState({generated: <Generate_Divs child={this.state.message} />});
+				console.log('setState called');
+				/*this.setState({key: <Generate_Divs child={this.state.message}/>});*/
+
+				/*ReactDOM.render(<Generated message={i+1} />, document.getElementById('root'));*/
 			}
 		}
+
 	}
+
 
 	render() {
 		return(<React.Fragment>
-		<input id="shareNum" onKeyUp={this.num}></input>
+		<input id="shareNum" onKeyPress={this.num}></input>
 		</React.Fragment>);
 	}
 }
@@ -241,12 +245,6 @@ function Generate_Divs(props) {
 	</React.Fragment>);	
 }
 
-function Node() {
-	return(<div className="field">
-	<input type="text" className="inputField" placeholder="enter your share here"></input>
-	</div>);
-}
-
 class Recover extends React.Component {
 	constructor(props) {
 		super(props);
@@ -254,31 +252,13 @@ class Recover extends React.Component {
 			recover: "/Recover",
 			query: "enter the number of shares",
 			message: "hey",
-			fields: [],
+			divisors: [],
 		};
-		this.addItems = this.addItems.bind(this);
 	}
-
-	addItems(i,a) {
-		let n = document.getElementById('shareNum').value;
-		if (i == n) {
-			this.setState((state,props) => ({
-				fields: a,
-			}));
-			return;
-		}
-		i++;
-		a.push(<Node key={i}/>);
-		setTimeout(this.addItems(i, a), 0);
-	}
-
 	render() {
 		return(<React.Fragment>
 		<RecoverHeaderContainer recover={this.state.recover}/>
-		<ShareQueryContainer query={this.state.query} func={this.addItems.bind(this, 0, [])}/>
-		<div id="fieldContainer">
-		{this.state.fields}
-		</div>	
+		<ShareQueryContainer query={this.state.query}/>
 		</React.Fragment>);
 	}
 }

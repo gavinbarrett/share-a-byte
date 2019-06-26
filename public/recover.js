@@ -1,5 +1,5 @@
-let mod = require('./number.js').mod;
-let mod_inv = require('./number.js').mod_inv;
+import {mod} from './number.js';
+import {mod_inv} from './number.js';
 
 function evaluate_poly(x, xi, xs, field) {
 	/* return value of polynomial at zero */
@@ -50,20 +50,16 @@ function process_shares(a) {
         return c;
 }
 
-function recover(xs, ys, field) {
+export function recover(xs, ys) {
 		/* recover the secret */
-		
-		let shares = process_shares(ys);	
+		let shares = process_shares(ys);
 		let secret = '';
+		let field = 257;
 
-		for (let i = 0; i < ys.length; i++) {
+		for (let i = 0; i < shares.length; i++) {
 			let s = interpolate(0, xs, shares[i], field);
 			secret += String.fromCharCode(s);
 		}
 		//console.log('The secret is: ', secret);
 		return secret;
 }
-
-module.exports = {
-	recover: recover,
-};

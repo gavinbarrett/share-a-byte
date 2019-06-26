@@ -1,5 +1,8 @@
 import {share} from './share.js';
+import {recover} from './recover.js';
+
 /* Below is code for the landing page */
+
 function Heading() {
 	return(<div id='heading'>
 	</div>);
@@ -7,7 +10,7 @@ function Heading() {
 
 function Subheader(props) {
 	return(<div id="subheader">
-		{props.sub}		
+		{props.sub}
 	</div>);
 }
 
@@ -70,11 +73,9 @@ ReactDOM.render(
 );
 
 
-
-
-/* 
+/*
  *
- * Below is code for the Sharing page 
+ * Below is code for the Sharing page
  *
  * */
 
@@ -100,7 +101,9 @@ function ShareHeaderContainer(props) {
 
 function shareSecret() {
 	let secret = document.getElementById('secretsub').value;
-	let shares = share(3,3, secret);
+	let n = document.getElementById('shareNumInput').value;
+	let t = document.getElementById('threshold').value;
+	let shares = share(n,t, secret);
 	return shares;
 }
 
@@ -139,9 +142,9 @@ class Share extends React.Component {
 }
 
 
-/* 
+/*
  *
- * Below is the code for the Recovery page 
+ * Below is the code for the Recovery page
  *
  * */
 
@@ -151,7 +154,7 @@ function RecoverPage() {
 
 function RecoverHeader(props) {
 	return(<React.Fragment>
-	<div class="shareRecoverHeader">
+	<div className="shareRecoverHeader">
 		{props.recover}
 	</div>
 	</React.Fragment>);
@@ -159,7 +162,7 @@ function RecoverHeader(props) {
 
 function RecoverHeaderContainer(props) {
 	return(<React.Fragment>
-	<div class="shareRecoverHeaderContainer">
+	<div className="shareRecoverHeaderContainer">
 	<RecoverHeader recover={props.recover}/>
 	</div>
 	</React.Fragment>);
@@ -175,7 +178,7 @@ function ShareQueryContainer(props) {
 	return(<React.Fragment>
 	<div id="shareQueryContainer">
 	<ShareQuery query={props.query} />
-	<ShareNum func={props.func} />
+	<ShareNum up={props.up} func={props.func} clear={props.clear} />
 	</div>
 	</React.Fragment>);
 }
@@ -186,64 +189,47 @@ function generate_divs() {
 	return parseInt(n, 10);
 }
 
-class Generated extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-	let elements = ['one','two','three'];
-	let items = [];
-
-	for (let i = 0; i < elements.length; i++) {
-		items.push(
-			<Generate_Divs child={props.message}/>
-		);
-	}
-
-	return(<React.Fragment>
-	<Recover />
-	<div>
-	{items}
-	</div>
-	</React.Fragment>);
-	}
-}
-
 class ShareNum extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			message: "hey",
 		};
-		
+
 		this.num = (event) => {
 			let x = document.getElementById('shareNum').value;
 			if (!x || event.charCode) {
 				return;
 			}
 			if (!isNaN(x) && x != "") {
+				props.clear();
 				props.func(0, []);
+				/*props.up(x);*/
 			}
 		}
 	}
 
 	render() {
 		return(<React.Fragment>
-		<input id="shareNum" onKeyUp={this.num}></input>
+		<input id="shareNum" onKeyUp={this.num.bind(this)}></input>
 		</React.Fragment>);
 	}
 }
 
-function Generate_Divs(props) {
-	return(<React.Fragment>
-	<div>{props.child}</div>
-	</React.Fragment>);	
+function Node(props) {
+	return(<div className="field">
+	<input type="text" id={props.k} className="inputField" placeholder="enter your share here" onKeyUp={props.grabFields} key={props.key}></input>
+	</div>);
 }
 
-function Node() {
-	return(<div className="field">
-	<input type="text" className="inputField" placeholder="enter your share here"></input>
+function RecoverSecret(props) {
+	return(<div id="recoverButtonWrapper">
+	<button id="recoverButton" onClick={props.func}>{props.name}</button>
+	</div>);
+}
+
+function Output(props) {
+	return(<div id="output">
 	</div>);
 }
 
@@ -255,8 +241,12 @@ class Recover extends React.Component {
 			query: "enter the number of shares",
 			message: "hey",
 			fields: [],
+			data: [],
 		};
+		this.updateValue = this.updateValue.bind(this);
+		this.clearArray = this.clearArray.bind(this);
 		this.addItems = this.addItems.bind(this);
+		this.grabFields = this.grabFields.bind(this);
 	}
 
 	addItems(i,a) {
@@ -268,17 +258,62 @@ class Recover extends React.Component {
 			return;
 		}
 		i++;
-		a.push(<Node key={i}/>);
+		let s = "Share " + i;
+		alert(s);
+		a.push(<Node grabFields={this.grabFields} key={i} k={i} value={s}/>);
 		setTimeout(this.addItems(i, a), 0);
+	}value
+
+	updateValue(event) {
+		this.setState({data: event});
+		alert(event);
 	}
+
+	grabFields(event) {
+		let index = event.target.id;
+		const newArr = [
+			...this.state.data.slice(0, index-1),
+			event.target.value,
+			...this.state.data.slice(index + 1),
+		];
+		this.setState({data: newArr});
+	}
+
+	triggerRecovery() {
+		/* Call recovery function on input shares */
+
+			let xs = [];
+			let ys = [];
+			for (let i = 0; i < this.state.data.length; i++) {
+				// save xs component
+				xs.push(this.state.data[i][0]);
+				// save ys component
+				/*let y = this.state.data[i].slice(2);
+				alert(y);*/
+				ys.push(this.state.data[i].slice(2));
+			}
+			let secret = recover(xs, ys);
+
+			let out = document.getElementById('output');
+			out.textContent = secret;
+	}
+
+	clearArray = () => {
+		alert('zup');
+		this.setState({
+			fields: [],
+		}, () => {alert(this.state.fields)});
+	};
 
 	render() {
 		return(<React.Fragment>
-		<RecoverHeaderContainer recover={this.state.recover}/>
-		<ShareQueryContainer query={this.state.query} func={this.addItems.bind(this, 0, [])}/>
-		<div id="fieldContainer">
-		{this.state.fields}
-		</div>	
+		<RecoverHeaderContainer recover={this.state.recover} onClick={this.grabFields}/>
+		<ShareQueryContainer query={this.state.query} up={this.updateValue} func={this.addItems.bind(this, 0, [])} clear={this.clearArray.bind(this)}/>
+		<div id="fieldContainer:">
+		{this.state.fields.length ? this.state.fields : <p>{this.state.message}</p>}
+		<RecoverSecret name="Recover Secret" func={this.triggerRecovery.bind(this)}/>
+		<Output />
+		</div>
 		</React.Fragment>);
 	}
 }

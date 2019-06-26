@@ -15,7 +15,7 @@ html, body {
 #subheader {
 	color: #000080;
 	font-family: Inconsolata;
-	font-size: 3vw;	
+	font-size: 3vw;
 }
 
 #headingContainer {
@@ -142,6 +142,9 @@ html, body {
 }
 
 .field {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	padding: 2px;
 }
 
@@ -152,4 +155,17 @@ html, body {
 	justify-content: center;
 	align-items: center;
 	flex-grow: 1;
+}
+
+#recoverButtonWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#output {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 }

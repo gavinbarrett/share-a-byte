@@ -23,7 +23,7 @@ function egcd(a,b,x,y) {
 	return [g,x,y];
 }
 
-function mod_inv(k, prime) {
+export function mod_inv(k, prime) {
 	/* return the mod inverse */
 	let array = egcd(k, prime, 0, 0);
 	let g = array[0];
@@ -52,6 +52,11 @@ export function return_hex(number) {
 		return 'zb';
 	else if (number == 256)
 		return 'za';
-	else
-		return number.toString(16);
+	else {
+		let hex = number.toString(16);
+		if (hex.length == 1) {
+			return '0' + hex;
+		}
+		return hex;
+	}
 }

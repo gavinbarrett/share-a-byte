@@ -1,5 +1,7 @@
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -7,7 +9,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import { share } from './share.js';
+import { recover } from './recover.js';
+
 /* Below is code for the landing page */
+
 function Heading() {
 	return React.createElement('div', { id: 'heading' });
 }
@@ -103,9 +108,9 @@ var LandingPage = function (_React$Component) {
 
 ReactDOM.render(React.createElement(LandingPage, null), document.getElementById('root'));
 
-/* 
+/*
  *
- * Below is code for the Sharing page 
+ * Below is code for the Sharing page
  *
  * */
 
@@ -139,7 +144,9 @@ function ShareHeaderContainer(props) {
 
 function shareSecret() {
 	var secret = document.getElementById('secretsub').value;
-	var shares = share(3, 3, secret);
+	var n = document.getElementById('shareNumInput').value;
+	var t = document.getElementById('threshold').value;
+	var shares = share(n, t, secret);
 	return shares;
 }
 
@@ -193,9 +200,9 @@ var Share = function (_React$Component2) {
 	return Share;
 }(React.Component);
 
-/* 
+/*
  *
- * Below is the code for the Recovery page 
+ * Below is the code for the Recovery page
  *
  * */
 
@@ -209,7 +216,7 @@ function RecoverHeader(props) {
 		null,
 		React.createElement(
 			'div',
-			{ 'class': 'shareRecoverHeader' },
+			{ className: 'shareRecoverHeader' },
 			props.recover
 		)
 	);
@@ -221,7 +228,7 @@ function RecoverHeaderContainer(props) {
 		null,
 		React.createElement(
 			'div',
-			{ 'class': 'shareRecoverHeaderContainer' },
+			{ className: 'shareRecoverHeaderContainer' },
 			React.createElement(RecoverHeader, { recover: props.recover })
 		)
 	);
@@ -247,7 +254,7 @@ function ShareQueryContainer(props) {
 			'div',
 			{ id: 'shareQueryContainer' },
 			React.createElement(ShareQuery, { query: props.query }),
-			React.createElement(ShareNum, { func: props.func })
+			React.createElement(ShareNum, { up: props.up, func: props.func, clear: props.clear })
 		)
 	);
 }
@@ -258,63 +265,30 @@ function generate_divs() {
 	return parseInt(n, 10);
 }
 
-var Generated = function (_React$Component3) {
-	_inherits(Generated, _React$Component3);
-
-	function Generated(props) {
-		_classCallCheck(this, Generated);
-
-		return _possibleConstructorReturn(this, (Generated.__proto__ || Object.getPrototypeOf(Generated)).call(this, props));
-	}
-
-	_createClass(Generated, [{
-		key: 'render',
-		value: function render() {
-			var elements = ['one', 'two', 'three'];
-			var items = [];
-
-			for (var i = 0; i < elements.length; i++) {
-				items.push(React.createElement(Generate_Divs, { child: props.message }));
-			}
-
-			return React.createElement(
-				React.Fragment,
-				null,
-				React.createElement(Recover, null),
-				React.createElement(
-					'div',
-					null,
-					items
-				)
-			);
-		}
-	}]);
-
-	return Generated;
-}(React.Component);
-
-var ShareNum = function (_React$Component4) {
-	_inherits(ShareNum, _React$Component4);
+var ShareNum = function (_React$Component3) {
+	_inherits(ShareNum, _React$Component3);
 
 	function ShareNum(props) {
 		_classCallCheck(this, ShareNum);
 
-		var _this4 = _possibleConstructorReturn(this, (ShareNum.__proto__ || Object.getPrototypeOf(ShareNum)).call(this, props));
+		var _this3 = _possibleConstructorReturn(this, (ShareNum.__proto__ || Object.getPrototypeOf(ShareNum)).call(this, props));
 
-		_this4.state = {
+		_this3.state = {
 			message: "hey"
 		};
 
-		_this4.num = function (event) {
+		_this3.num = function (event) {
 			var x = document.getElementById('shareNum').value;
 			if (!x || event.charCode) {
 				return;
 			}
 			if (!isNaN(x) && x != "") {
+				props.clear();
 				props.func(0, []);
+				/*props.up(x);*/
 			}
 		};
-		return _this4;
+		return _this3;
 	}
 
 	_createClass(ShareNum, [{
@@ -323,7 +297,7 @@ var ShareNum = function (_React$Component4) {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement('input', { id: 'shareNum', onKeyUp: this.num })
+				React.createElement('input', { id: 'shareNum', onKeyUp: this.num.bind(this) })
 			);
 		}
 	}]);
@@ -331,42 +305,59 @@ var ShareNum = function (_React$Component4) {
 	return ShareNum;
 }(React.Component);
 
-function Generate_Divs(props) {
+function Node(props) {
 	return React.createElement(
-		React.Fragment,
-		null,
+		'div',
+		{ className: 'field' },
+		React.createElement('input', { type: 'text', id: props.k, className: 'inputField', placeholder: 'enter your share here', onKeyUp: props.grabFields, key: props.key })
+	);
+}
+
+function RecoverSecret(props) {
+	return React.createElement(
+		'div',
+		{ id: 'recoverButtonWrapper' },
 		React.createElement(
-			'div',
-			null,
-			props.child
+			'button',
+			{ id: 'recoverButton', onClick: props.func },
+			props.name
 		)
 	);
 }
 
-function Node() {
-	return React.createElement(
-		'div',
-		{ className: 'field' },
-		React.createElement('input', { type: 'text', className: 'inputField', placeholder: 'enter your share here' })
-	);
+function Output(props) {
+	return React.createElement('div', { id: 'output' });
 }
 
-var Recover = function (_React$Component5) {
-	_inherits(Recover, _React$Component5);
+var Recover = function (_React$Component4) {
+	_inherits(Recover, _React$Component4);
 
 	function Recover(props) {
 		_classCallCheck(this, Recover);
 
-		var _this5 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
+		var _this4 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
 
-		_this5.state = {
+		_this4.clearArray = function () {
+			alert('zup');
+			_this4.setState({
+				fields: []
+			}, function () {
+				alert(_this4.state.fields);
+			});
+		};
+
+		_this4.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
 			message: "hey",
-			fields: []
+			fields: [],
+			data: []
 		};
-		_this5.addItems = _this5.addItems.bind(_this5);
-		return _this5;
+		_this4.updateValue = _this4.updateValue.bind(_this4);
+		_this4.clearArray = _this4.clearArray.bind(_this4);
+		_this4.addItems = _this4.addItems.bind(_this4);
+		_this4.grabFields = _this4.grabFields.bind(_this4);
+		return _this4;
 	}
 
 	_createClass(Recover, [{
@@ -382,8 +373,43 @@ var Recover = function (_React$Component5) {
 				return;
 			}
 			i++;
-			a.push(React.createElement(Node, { key: i }));
+			var s = "Share " + i;
+			alert(s);
+			a.push(React.createElement(Node, { grabFields: this.grabFields, key: i, k: i, value: s }));
 			setTimeout(this.addItems(i, a), 0);
+		}
+	}, {
+		key: 'updateValue',
+		value: function updateValue(event) {
+			this.setState({ data: event });
+			alert(event);
+		}
+	}, {
+		key: 'grabFields',
+		value: function grabFields(event) {
+			var index = event.target.id;
+			var newArr = [].concat(_toConsumableArray(this.state.data.slice(0, index - 1)), [event.target.value], _toConsumableArray(this.state.data.slice(index + 1)));
+			this.setState({ data: newArr });
+		}
+	}, {
+		key: 'triggerRecovery',
+		value: function triggerRecovery() {
+			/* Call recovery function on input shares */
+
+			var xs = [];
+			var ys = [];
+			for (var i = 0; i < this.state.data.length; i++) {
+				// save xs component
+				xs.push(this.state.data[i][0]);
+				// save ys component
+				/*let y = this.state.data[i].slice(2);
+    alert(y);*/
+				ys.push(this.state.data[i].slice(2));
+			}
+			var secret = recover(xs, ys);
+
+			var out = document.getElementById('output');
+			out.textContent = secret;
 		}
 	}, {
 		key: 'render',
@@ -391,12 +417,18 @@ var Recover = function (_React$Component5) {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement(RecoverHeaderContainer, { recover: this.state.recover }),
-				React.createElement(ShareQueryContainer, { query: this.state.query, func: this.addItems.bind(this, 0, []) }),
+				React.createElement(RecoverHeaderContainer, { recover: this.state.recover, onClick: this.grabFields }),
+				React.createElement(ShareQueryContainer, { query: this.state.query, up: this.updateValue, func: this.addItems.bind(this, 0, []), clear: this.clearArray.bind(this) }),
 				React.createElement(
 					'div',
-					{ id: 'fieldContainer' },
-					this.state.fields
+					{ id: 'fieldContainer:' },
+					this.state.fields.length ? this.state.fields : React.createElement(
+						'p',
+						null,
+						this.state.message
+					),
+					React.createElement(RecoverSecret, { name: 'Recover Secret', func: this.triggerRecovery.bind(this) }),
+					React.createElement(Output, null)
 				)
 			);
 		}

@@ -143,11 +143,12 @@ function ShareHeaderContainer(props) {
 }
 
 function shareSecret() {
+	/* Call the share function */
+	/* FIXME parse inputs and return any appropriate error messages */
 	var secret = document.getElementById('secretsub').value;
 	var n = document.getElementById('shareNumInput').value;
 	var t = document.getElementById('threshold').value;
-	var shares = share(n, t, secret);
-	return shares;
+	return share(n, t, secret);
 }
 
 var Share = function (_React$Component2) {
@@ -283,7 +284,8 @@ var ShareNum = function (_React$Component3) {
 				return;
 			}
 			if (!isNaN(x) && x != "") {
-				props.clear();
+				_this3.setState({ fields: [] });
+				props.clear(0);
 				props.func(0, []);
 				/*props.up(x);*/
 			}
@@ -337,15 +339,6 @@ var Recover = function (_React$Component4) {
 
 		var _this4 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
 
-		_this4.clearArray = function () {
-			alert('zup');
-			_this4.setState({
-				fields: []
-			}, function () {
-				alert(_this4.state.fields);
-			});
-		};
-
 		_this4.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
@@ -374,7 +367,7 @@ var Recover = function (_React$Component4) {
 			}
 			i++;
 			var s = "Share " + i;
-			alert(s);
+			/*alert(s);*/
 			a.push(React.createElement(Node, { grabFields: this.grabFields, key: i, k: i, value: s }));
 			setTimeout(this.addItems(i, a), 0);
 		}
@@ -382,13 +375,13 @@ var Recover = function (_React$Component4) {
 		key: 'updateValue',
 		value: function updateValue(event) {
 			this.setState({ data: event });
-			alert(event);
+			/*alert(event);*/
 		}
 	}, {
 		key: 'grabFields',
 		value: function grabFields(event) {
 			var index = event.target.id;
-			var newArr = [].concat(_toConsumableArray(this.state.data.slice(0, index - 1)), [event.target.value], _toConsumableArray(this.state.data.slice(index + 1)));
+			var newArr = [].concat(_toConsumableArray(this.state.data.slice(0, index)), [event.target.value], _toConsumableArray(this.state.data.slice(index + 1)));
 			this.setState({ data: newArr });
 		}
 	}, {
@@ -399,6 +392,7 @@ var Recover = function (_React$Component4) {
 			var xs = [];
 			var ys = [];
 			for (var i = 0; i < this.state.data.length; i++) {
+				console.log(this.state.data[i]);
 				// save xs component
 				xs.push(this.state.data[i][0]);
 				// save ys component
@@ -410,6 +404,17 @@ var Recover = function (_React$Component4) {
 
 			var out = document.getElementById('output');
 			out.textContent = secret;
+		}
+	}, {
+		key: 'clearArray',
+		value: function clearArray(ind) {
+			alert('zup');
+			var s = this.state.fields.slice(0, ind);
+			this.setState({
+				fields: []
+			}, console.log(this.state.fields));
+
+			this.forceUpdate();
 		}
 	}, {
 		key: 'render',

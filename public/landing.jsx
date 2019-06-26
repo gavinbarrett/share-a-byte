@@ -100,11 +100,12 @@ function ShareHeaderContainer(props) {
 }
 
 function shareSecret() {
+	/* Call the share function */
+	/* FIXME parse inputs and return any appropriate error messages */
 	let secret = document.getElementById('secretsub').value;
 	let n = document.getElementById('shareNumInput').value;
 	let t = document.getElementById('threshold').value;
-	let shares = share(n,t, secret);
-	return shares;
+	return share(n,t, secret);
 }
 
 class Share extends React.Component {
@@ -202,7 +203,8 @@ class ShareNum extends React.Component {
 				return;
 			}
 			if (!isNaN(x) && x != "") {
-				props.clear();
+				this.setState({fields: []});
+				props.clear(0);
 				props.func(0, []);
 				/*props.up(x);*/
 			}
@@ -259,14 +261,13 @@ class Recover extends React.Component {
 		}
 		i++;
 		let s = "Share " + i;
-		alert(s);
 		a.push(<Node grabFields={this.grabFields} key={i} k={i} value={s}/>);
-		setTimeout(this.addItems(i, a), 0);
-	}value
+		setTimeout(this.addItems(i, a), 100);
+	}
 
 	updateValue(event) {
 		this.setState({data: event});
-		alert(event);
+		/*alert(event);*/
 	}
 
 	grabFields(event) {
@@ -285,6 +286,7 @@ class Recover extends React.Component {
 			let xs = [];
 			let ys = [];
 			for (let i = 0; i < this.state.data.length; i++) {
+				console.log(this.state.data[i]);
 				// save xs component
 				xs.push(this.state.data[i][0]);
 				// save ys component
@@ -298,11 +300,15 @@ class Recover extends React.Component {
 			out.textContent = secret;
 	}
 
-	clearArray = () => {
+	clearArray(ind){
 		alert('zup');
+		let s = this.state.fields.slice(0,ind);
 		this.setState({
 			fields: [],
-		}, () => {alert(this.state.fields)});
+		}, (console.log(this.state.fields)));
+
+		this.forceUpdate();
+
 	};
 
 	render() {

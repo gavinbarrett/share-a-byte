@@ -284,8 +284,8 @@ var ShareNum = function (_React$Component3) {
 				return;
 			}
 			if (!isNaN(x) && x != "") {
-				_this3.setState({ fields: [] });
-				props.clear(0);
+				/*this.setState({fields: []});*/
+				props.clear();
 				props.func(0, []);
 				/*props.up(x);*/
 			}
@@ -339,6 +339,12 @@ var Recover = function (_React$Component4) {
 
 		var _this4 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
 
+		_this4.clearArray = function () {
+			_this4.setState({
+				fields: []
+			}, console.log(_this4.state.fields));
+		};
+
 		_this4.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
@@ -367,9 +373,8 @@ var Recover = function (_React$Component4) {
 			}
 			i++;
 			var s = "Share " + i;
-			/*alert(s);*/
 			a.push(React.createElement(Node, { grabFields: this.grabFields, key: i, k: i, value: s }));
-			setTimeout(this.addItems(i, a), 0);
+			setTimeout(this.addItems(i, a), 100);
 		}
 	}, {
 		key: 'updateValue',
@@ -381,7 +386,7 @@ var Recover = function (_React$Component4) {
 		key: 'grabFields',
 		value: function grabFields(event) {
 			var index = event.target.id;
-			var newArr = [].concat(_toConsumableArray(this.state.data.slice(0, index)), [event.target.value], _toConsumableArray(this.state.data.slice(index + 1)));
+			var newArr = [].concat(_toConsumableArray(this.state.data.slice(0, index - 1)), [event.target.value], _toConsumableArray(this.state.data.slice(index + 1)));
 			this.setState({ data: newArr });
 		}
 	}, {
@@ -406,32 +411,23 @@ var Recover = function (_React$Component4) {
 			out.textContent = secret;
 		}
 	}, {
-		key: 'clearArray',
-		value: function clearArray(ind) {
-			alert('zup');
-			var s = this.state.fields.slice(0, ind);
-			this.setState({
-				fields: []
-			}, console.log(this.state.fields));
-
-			this.forceUpdate();
-		}
-	}, {
 		key: 'render',
 		value: function render() {
+			var _this5 = this;
+
 			return React.createElement(
 				React.Fragment,
 				null,
 				React.createElement(RecoverHeaderContainer, { recover: this.state.recover, onClick: this.grabFields }),
-				React.createElement(ShareQueryContainer, { query: this.state.query, up: this.updateValue, func: this.addItems.bind(this, 0, []), clear: this.clearArray.bind(this) }),
+				React.createElement(ShareQueryContainer, { query: this.state.query, up: this.updateValue, func: function func() {
+						_this5.addItems(0, []);
+					}, clear: function clear() {
+						_this5.clearArray();
+					} }),
 				React.createElement(
 					'div',
 					{ id: 'fieldContainer:' },
-					this.state.fields.length ? this.state.fields : React.createElement(
-						'p',
-						null,
-						this.state.message
-					),
+					this.state.fields,
 					React.createElement(RecoverSecret, { name: 'Recover Secret', func: this.triggerRecovery.bind(this) }),
 					React.createElement(Output, null)
 				)

@@ -203,10 +203,8 @@ class ShareNum extends React.Component {
 				return;
 			}
 			if (!isNaN(x) && x != "") {
-				this.setState({fields: []});
-				props.clear(0);
+				props.clear();
 				props.func(0, []);
-				/*props.up(x);*/
 			}
 		}
 	}
@@ -300,23 +298,18 @@ class Recover extends React.Component {
 			out.textContent = secret;
 	}
 
-	clearArray(ind){
-		alert('zup');
-		let s = this.state.fields.slice(0,ind);
+	clearArray = () => {
 		this.setState({
 			fields: [],
 		}, (console.log(this.state.fields)));
-
-		this.forceUpdate();
-
 	};
 
 	render() {
 		return(<React.Fragment>
 		<RecoverHeaderContainer recover={this.state.recover} onClick={this.grabFields}/>
-		<ShareQueryContainer query={this.state.query} up={this.updateValue} func={this.addItems.bind(this, 0, [])} clear={this.clearArray.bind(this)}/>
+		<ShareQueryContainer query={this.state.query} up={this.updateValue} func={() => { this.addItems(0,[]) }} clear={() => { this.clearArray() }}/>
 		<div id="fieldContainer:">
-		{this.state.fields.length ? this.state.fields : <p>{this.state.message}</p>}
+		{this.state.fields}
 		<RecoverSecret name="Recover Secret" func={this.triggerRecovery.bind(this)}/>
 		<Output />
 		</div>

@@ -156,7 +156,7 @@ function RecoverPage() {
 function RecoverHeader(props) {
 	return(<React.Fragment>
 	<div className="shareRecoverHeader">
-		{props.recover}
+	{props.recover}
 	</div>
 	</React.Fragment>);
 }
@@ -193,10 +193,6 @@ function generate_divs() {
 class ShareNum extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			message: "hey",
-		};
-
 		this.num = (event) => {
 			let x = document.getElementById('shareNum').value;
 			if (!x || event.charCode) {
@@ -211,14 +207,14 @@ class ShareNum extends React.Component {
 
 	render() {
 		return(<React.Fragment>
-		<input id="shareNum" onKeyUp={this.num.bind(this)}></input>
+		<input id="shareNum" onKeyUp={this.num}></input>
 		</React.Fragment>);
 	}
 }
 
 function Node(props) {
 	return(<div className="field">
-	<input type="text" id={props.k} className="inputField" placeholder="enter your share here" onKeyUp={props.grabFields} key={props.key}></input>
+	<input type="text" id={props.k} className="inputField" placeholder="enter your share here" onChange={props.grabFields} key={props.key}></input>
 	</div>);
 }
 
@@ -239,69 +235,57 @@ class Recover extends React.Component {
 		this.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
-			message: "hey",
 			fields: [],
 			data: [],
 		};
-		this.updateValue = this.updateValue.bind(this);
 		this.clearArray = this.clearArray.bind(this);
 		this.addItems = this.addItems.bind(this);
-		this.grabFields = this.grabFields.bind(this);
+		this.updateFields = this.updateFields.bind(this);
 	}
 
-	addItems(i,a) {
-		let n = document.getElementById('shareNum').value;
-		if (i == n) {
+	addItems(index, array) {
+		let thresh = document.getElementById('shareNum').value;
+		if (index == thresh) {
 			this.setState((state,props) => ({
-				fields: a,
+				fields: array,
 			}));
 			return;
 		}
-		i++;
-		let s = "Share " + i;
-		a.push(<Node grabFields={this.grabFields} key={i} k={i} value={s}/>);
-		setTimeout(this.addItems(i, a), 100);
+		index++;
+		array.push(<Node grabFields={this.updateFields} key={index} k={index}/>);
+		this.addItems(index, array);
 	}
 
-	updateValue(event) {
-		this.setState({data: event});
-		/*alert(event);*/
-	}
-
-	grabFields(event) {
+	updateFields(event) {
 		let index = event.target.id;
-		const newArr = [
-			...this.state.data.slice(0, index-1),
-			event.target.value,
-			...this.state.data.slice(index + 1),
-		];
+		let newArr = this.state.data.slice();
+		if (newArr[index-2] == undefined)
+			newArr[index] = "";
+		newArr[index] = event.target.value;
 		this.setState({data: newArr});
 	}
 
-	triggerRecovery() {
-		/* Call recovery function on input shares */
-
+	triggerRecovery = () => {
+		/* call recovery function on input shares */
 			let xs = [];
 			let ys = [];
+			this.state.data.shift();
 			for (let i = 0; i < this.state.data.length; i++) {
-				console.log(this.state.data[i]);
 				// save xs component
 				xs.push(this.state.data[i][0]);
 				// save ys component
-				/*let y = this.state.data[i].slice(2);
-				alert(y);*/
 				ys.push(this.state.data[i].slice(2));
 			}
 			let secret = recover(xs, ys);
-
 			let out = document.getElementById('output');
 			out.textContent = secret;
 	}
 
 	clearArray = () => {
+		/* clear the field array */
 		this.setState({
 			fields: [],
-		}, (console.log(this.state.fields)));
+		});
 	};
 
 	render() {
@@ -310,7 +294,7 @@ class Recover extends React.Component {
 		<ShareQueryContainer query={this.state.query} up={this.updateValue} func={() => { this.addItems(0,[]) }} clear={() => { this.clearArray() }}/>
 		<div id="fieldContainer:">
 		{this.state.fields}
-		<RecoverSecret name="Recover Secret" func={this.triggerRecovery.bind(this)}/>
+		<RecoverSecret name="Recover Secret" func={this.triggerRecovery}/>
 		<Output />
 		</div>
 		</React.Fragment>);

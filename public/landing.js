@@ -1,7 +1,5 @@
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -274,20 +272,14 @@ var ShareNum = function (_React$Component3) {
 
 		var _this3 = _possibleConstructorReturn(this, (ShareNum.__proto__ || Object.getPrototypeOf(ShareNum)).call(this, props));
 
-		_this3.state = {
-			message: "hey"
-		};
-
 		_this3.num = function (event) {
 			var x = document.getElementById('shareNum').value;
 			if (!x || event.charCode) {
 				return;
 			}
 			if (!isNaN(x) && x != "") {
-				/*this.setState({fields: []});*/
 				props.clear();
 				props.func(0, []);
-				/*props.up(x);*/
 			}
 		};
 		return _this3;
@@ -299,7 +291,7 @@ var ShareNum = function (_React$Component3) {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement('input', { id: 'shareNum', onKeyUp: this.num.bind(this) })
+				React.createElement('input', { id: 'shareNum', onKeyUp: this.num })
 			);
 		}
 	}]);
@@ -311,7 +303,7 @@ function Node(props) {
 	return React.createElement(
 		'div',
 		{ className: 'field' },
-		React.createElement('input', { type: 'text', id: props.k, className: 'inputField', placeholder: 'enter your share here', onKeyUp: props.grabFields, key: props.key })
+		React.createElement('input', { type: 'text', id: props.k, className: 'inputField', placeholder: 'enter your share here', onChange: props.grabFields, key: props.key })
 	);
 }
 
@@ -339,76 +331,65 @@ var Recover = function (_React$Component4) {
 
 		var _this4 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
 
+		_this4.triggerRecovery = function () {
+			/* call recovery function on input shares */
+			var xs = [];
+			var ys = [];
+			_this4.state.data.shift();
+			for (var i = 0; i < _this4.state.data.length; i++) {
+				// save xs component
+				xs.push(_this4.state.data[i][0]);
+				// save ys component
+				ys.push(_this4.state.data[i].slice(2));
+			}
+			var secret = recover(xs, ys);
+			var out = document.getElementById('output');
+			out.textContent = secret;
+		};
+
 		_this4.clearArray = function () {
+			/* clear the field array */
 			_this4.setState({
 				fields: []
-			}, console.log(_this4.state.fields));
+			});
 		};
 
 		_this4.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
-			message: "hey",
 			fields: [],
 			data: []
 		};
-		_this4.updateValue = _this4.updateValue.bind(_this4);
 		_this4.clearArray = _this4.clearArray.bind(_this4);
 		_this4.addItems = _this4.addItems.bind(_this4);
-		_this4.grabFields = _this4.grabFields.bind(_this4);
+		_this4.updateFields = _this4.updateFields.bind(_this4);
 		return _this4;
 	}
 
 	_createClass(Recover, [{
 		key: 'addItems',
-		value: function addItems(i, a) {
-			var n = document.getElementById('shareNum').value;
-			if (i == n) {
+		value: function addItems(index, array) {
+			var thresh = document.getElementById('shareNum').value;
+			if (index == thresh) {
 				this.setState(function (state, props) {
 					return {
-						fields: a
+						fields: array
 					};
 				});
 				return;
 			}
-			i++;
-			var s = "Share " + i;
-			a.push(React.createElement(Node, { grabFields: this.grabFields, key: i, k: i, value: s }));
-			setTimeout(this.addItems(i, a), 100);
+			index++;
+			array.push(React.createElement(Node, { grabFields: this.updateFields, key: index, k: index }));
+			this.addItems(index, array);
 		}
 	}, {
-		key: 'updateValue',
-		value: function updateValue(event) {
-			this.setState({ data: event });
-			/*alert(event);*/
-		}
-	}, {
-		key: 'grabFields',
-		value: function grabFields(event) {
+		key: 'updateFields',
+		value: function updateFields(event) {
 			var index = event.target.id;
-			var newArr = [].concat(_toConsumableArray(this.state.data.slice(0, index - 1)), [event.target.value], _toConsumableArray(this.state.data.slice(index + 1)));
+			var newArr = this.state.data.slice();
+			if (newArr[index - 2] == undefined) newArr[index] = "";
+			newArr[index] = event.target.value;
 			this.setState({ data: newArr });
-		}
-	}, {
-		key: 'triggerRecovery',
-		value: function triggerRecovery() {
-			/* Call recovery function on input shares */
-
-			var xs = [];
-			var ys = [];
-			for (var i = 0; i < this.state.data.length; i++) {
-				console.log(this.state.data[i]);
-				// save xs component
-				xs.push(this.state.data[i][0]);
-				// save ys component
-				/*let y = this.state.data[i].slice(2);
-    alert(y);*/
-				ys.push(this.state.data[i].slice(2));
-			}
-			var secret = recover(xs, ys);
-
-			var out = document.getElementById('output');
-			out.textContent = secret;
 		}
 	}, {
 		key: 'render',
@@ -428,7 +409,7 @@ var Recover = function (_React$Component4) {
 					'div',
 					{ id: 'fieldContainer:' },
 					this.state.fields,
-					React.createElement(RecoverSecret, { name: 'Recover Secret', func: this.triggerRecovery.bind(this) }),
+					React.createElement(RecoverSecret, { name: 'Recover Secret', func: this.triggerRecovery }),
 					React.createElement(Output, null)
 				)
 			);

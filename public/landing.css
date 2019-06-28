@@ -32,7 +32,7 @@ html, body {
 	width: 30%;
 	display: flex;
 	font-family: Inconsolata;
-	font-size: 80%;
+	font-size: 60%;
 	text-align: center;
 	vertical-align: middle;
 	justify-content: center;
@@ -74,28 +74,29 @@ html, body {
 }
 
 #shareNumInput {
-	width: 40%;
+	width: 50vw;
 	height: 5vh;
 	text-align: center;
-	font-size: 45px;
-	border-radius: 15px;
-
+	font-size: 60%;
+	border-radius: 10px;
 }
 
 #threshold {
-	width: 40%;
+	width: 50vw;
 	height: 5vh;
 	text-align: center;
-	font-size: 45px;
-	border-radius: 15px;
+	font-size: 60%;
+	border-radius: 10px;
+	margin-top: 2%;
 }
 
 #secretsub {
-	width: 40%;
+	width: 50vw;
 	height: 20vh;
 	text-align: center;
-	font-size: 45px;
-	border-radius: 15px;
+	font-size: 60%;
+	border-radius: 10px;
+	margin-top: 2%;
 }
 
 #secretsubContainer {

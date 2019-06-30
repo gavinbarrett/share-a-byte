@@ -1,13 +1,10 @@
 As of 06-19-2019
 -----------------------------------------------------------------------
--> Connect sharing code to React code
-	-> Merge shareTest/recoverTest code into public/share.js, public/recover.js
-
 -> Redesign React code for a better presentation
 	-> Fix clearing/chopping of field array to dynamically change fields presentation
-	-> Fixe grabFields problem; fields entered out of order get overwritten
 	-> Create renders for the Share and recover pages
 	-> Redesign tablet and mobile views
+	-> Fix sharing page so that we can share a new secret without reloading
 -> Figure out how to import modules into /public from other directories
 
 Future design considerations

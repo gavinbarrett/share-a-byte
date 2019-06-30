@@ -57,7 +57,9 @@ function gen_coeff(k, field) {
 
 export function share(n, k, plaintext) {
 	/* return shares for the plaintext */
-	if (k > n) {
+  let a = parseInt(n, 10);
+  let b = parseInt(k, 10);
+	if (b > a) {
 		console.log('threshold too large');
 		return;
 	}

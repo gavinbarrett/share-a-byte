@@ -85,7 +85,7 @@ function SharePage() {
 
 function ShareHeader(props) {
 	return(<React.Fragment>
-		<div className="shareRecoverHeader">
+			<div className="shareRecoverHeader">
 		{props.share}
 		</div>
 	</React.Fragment>);
@@ -95,6 +95,8 @@ function ShareHeaderContainer(props) {
 	return(<React.Fragment>
 		<div class="shareRecoverHeaderContainer">
 		<ShareHeader share={props.share}/>
+		<input type="text" id="shareNumInput" placeholder="enter number of shares here"></input>
+		<input type="text" id="threshold" placeholder="enter the threshold here"></input>
 		</div>
 	</React.Fragment>);
 }
@@ -105,16 +107,26 @@ function shareSecret() {
 	let secret = document.getElementById('secretsub').value;
 	let n = document.getElementById('shareNumInput').value;
 	let t = document.getElementById('threshold').value;
-	return share(n,t, secret);
+	return share(n, t, secret);
 }
+
+function ShareBox(props) {
+		return(<div>
+		<textarea className="shareBox" key={props.num}>{props.num + " " + props.share}</textarea>
+		</div>);
+}
+
 
 class Share extends React.Component {
 	constructor(proper) {
 		super(proper);
 		this.state = {
 			share: "S/hare",
+			shareArr: [],
 		};
-		this.sub = (event) => {
+		this.clearShareArray = this.clearShareArray.bind(this);
+	}
+		sub = (event) => {
 			if (event.charCode == 13) {
 				let n = document.getElementById('shareNumInput');
 				let t = document.getElementById('threshold');
@@ -123,20 +135,37 @@ class Share extends React.Component {
 					return;
 				}
 				let shares = shareSecret();
-				let out = document.getElementById('share-output');
-				console.log(shares);
-				out.textContent = shares;
+				this.outputShares(shares);
 			}
-		}
-	}
+		};
+		outputShares = (shares) => {
+			/* output shares to the screen */
+			let newShareArr = [];
+			for (let i = 0; i < shares.length; i++) {
+						if (newShareArr[i] == undefined)
+								newShareArr[i] = "";
+						newShareArr[i] = (<ShareBox num={i+1} share={shares[i]}/>);
+			}
+			this.setState({shareArr: newShareArr}, () => {console.log(this.state.shareArr)});
+		};
+
+		clearShareArray = () => {
+				/* clear array of shares */
+				console.log('clearing...');
+				this.setState({
+					shareArr: [],
+				}, () => { console.log(this.state.shareArr) });
+		};
+
 	render() {
 	return(<React.Fragment>
 	<ShareHeaderContainer share={this.state.share}/>
 	<div id="secretsubContainer">
-	<input type="text" id="shareNumInput" placeholder="enter number of shares here"></input>
-	<input type="text" id="threshold" placeholder="enter the threshold here"></input>
 	<input type="text" id="secretsub" onKeyPress={this.sub} placeholder="enter secret here"></input></div>
+	<div id="share-outputContainer">
 	<div id="share-output">
+	{this.state.shareArr}
+	</div>
 	</div>
 	</React.Fragment>);
 	}
@@ -195,10 +224,14 @@ class ShareNum extends React.Component {
 		super(props);
 		this.num = (event) => {
 			let x = document.getElementById('shareNum').value;
-			if (!x || event.charCode) {
+			if (event.charCode) {
 				return;
 			}
-			if (!isNaN(x) && x != "") {
+			if (!x) {
+				props.clear();
+				return;
+			}
+			if (!isNaN(x) /*&& x != ""*/) {
 				props.clear();
 				props.func(0, []);
 			}

@@ -135,7 +135,9 @@ function ShareHeaderContainer(props) {
 		React.createElement(
 			'div',
 			{ 'class': 'shareRecoverHeaderContainer' },
-			React.createElement(ShareHeader, { share: props.share })
+			React.createElement(ShareHeader, { share: props.share }),
+			React.createElement('input', { type: 'text', id: 'shareNumInput', placeholder: 'enter number of shares here' }),
+			React.createElement('input', { type: 'text', id: 'threshold', placeholder: 'enter the threshold here' })
 		)
 	);
 }
@@ -149,6 +151,18 @@ function shareSecret() {
 	return share(n, t, secret);
 }
 
+function ShareBox(props) {
+	return React.createElement(
+		'div',
+		null,
+		React.createElement(
+			'textarea',
+			{ className: 'shareBox', key: props.num },
+			props.num + " " + props.share
+		)
+	);
+}
+
 var Share = function (_React$Component2) {
 	_inherits(Share, _React$Component2);
 
@@ -157,9 +171,6 @@ var Share = function (_React$Component2) {
 
 		var _this2 = _possibleConstructorReturn(this, (Share.__proto__ || Object.getPrototypeOf(Share)).call(this, proper));
 
-		_this2.state = {
-			share: "S/hare"
-		};
 		_this2.sub = function (event) {
 			if (event.charCode == 13) {
 				var n = document.getElementById('shareNumInput');
@@ -169,11 +180,37 @@ var Share = function (_React$Component2) {
 					return;
 				}
 				var shares = shareSecret();
-				var out = document.getElementById('share-output');
-				console.log(shares);
-				out.textContent = shares;
+				_this2.outputShares(shares);
 			}
 		};
+
+		_this2.outputShares = function (shares) {
+			/* output shares to the screen */
+			var newShareArr = [];
+			for (var i = 0; i < shares.length; i++) {
+				if (newShareArr[i] == undefined) newShareArr[i] = "";
+				newShareArr[i] = React.createElement(ShareBox, { num: i + 1, share: shares[i] });
+			}
+			_this2.setState({ shareArr: newShareArr }, function () {
+				console.log(_this2.state.shareArr);
+			});
+		};
+
+		_this2.clearShareArray = function () {
+			/* clear array of shares */
+			console.log('clearing...');
+			_this2.setState({
+				shareArr: []
+			}, function () {
+				console.log(_this2.state.shareArr);
+			});
+		};
+
+		_this2.state = {
+			share: "S/hare",
+			shareArr: []
+		};
+		_this2.clearShareArray = _this2.clearShareArray.bind(_this2);
 		return _this2;
 	}
 
@@ -187,11 +224,17 @@ var Share = function (_React$Component2) {
 				React.createElement(
 					'div',
 					{ id: 'secretsubContainer' },
-					React.createElement('input', { type: 'text', id: 'shareNumInput', placeholder: 'enter number of shares here' }),
-					React.createElement('input', { type: 'text', id: 'threshold', placeholder: 'enter the threshold here' }),
 					React.createElement('input', { type: 'text', id: 'secretsub', onKeyPress: this.sub, placeholder: 'enter secret here' })
 				),
-				React.createElement('div', { id: 'share-output' })
+				React.createElement(
+					'div',
+					{ id: 'share-outputContainer' },
+					React.createElement(
+						'div',
+						{ id: 'share-output' },
+						this.state.shareArr
+					)
+				)
 			);
 		}
 	}]);
@@ -274,13 +317,17 @@ var ShareNum = function (_React$Component3) {
 
 		_this3.num = function (event) {
 			var x = document.getElementById('shareNum').value;
-			if (!x || event.charCode) {
+			if (event.charCode) {
 				return;
 			}
-			if (!isNaN(x) && x != "") {
+			if (!x) {
 				props.clear();
-				props.func(0, []);
+				return;
 			}
+			if (!isNaN(x) /*&& x != ""*/) {
+					props.clear();
+					props.func(0, []);
+				}
 		};
 		return _this3;
 	}

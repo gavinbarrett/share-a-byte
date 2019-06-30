@@ -94,9 +94,10 @@ html, body {
 
 #secretsub {
 	width: 50vw;
+	display: flex;
 	height: 30vh;
 	text-align: center;
-	font-size: 60%;
+	font-size: 100%;
 	border-radius: 15px;
 }
 
@@ -135,8 +136,9 @@ html, body {
 	width: 50%;
 	text-align: center;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	vertical-align: middle;
+	font-size: 100%;
 	color: #add8e6;
 }
 
@@ -147,13 +149,25 @@ html, body {
 	justify-content: center;
 }
 
+textarea {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+
 .shareBox {
-	margin-top: 5%;
 	resize: none;
+	margin-top: 50%;
 	text-align: center;
 	font-family: Inconsolata;
 	font-size: 75%;
 	border-radius: 10px;
+}
+
+.shareBoxContainer {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
 }
 
 #shareNum {

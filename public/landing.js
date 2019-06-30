@@ -134,7 +134,7 @@ function ShareHeaderContainer(props) {
 		null,
 		React.createElement(
 			'div',
-			{ 'class': 'shareRecoverHeaderContainer' },
+			{ className: 'shareRecoverHeaderContainer' },
 			React.createElement(ShareHeader, { share: props.share }),
 			React.createElement('input', { type: 'text', id: 'shareNumInput', placeholder: 'enter number of shares here' }),
 			React.createElement('input', { type: 'text', id: 'threshold', placeholder: 'enter the threshold here' })
@@ -154,10 +154,10 @@ function shareSecret() {
 function ShareBox(props) {
 	return React.createElement(
 		'div',
-		null,
+		{ className: 'shareBoxContainer' },
 		React.createElement(
 			'textarea',
-			{ className: 'shareBox', key: props.num },
+			{ className: 'shareBox', key: props.key },
 			props.num + " " + props.share
 		)
 	);
@@ -172,6 +172,7 @@ var Share = function (_React$Component2) {
 		var _this2 = _possibleConstructorReturn(this, (Share.__proto__ || Object.getPrototypeOf(Share)).call(this, proper));
 
 		_this2.sub = function () {
+			console.log('subbing');
 			var n = document.getElementById('shareNumInput');
 			var t = document.getElementById('threshold');
 			if (!n || !t) {
@@ -185,11 +186,13 @@ var Share = function (_React$Component2) {
 		_this2.outputShares = function (shares) {
 			/* output shares to the screen */
 			var newShareArr = [];
+			var idx = _this2.state.index;
 			for (var i = 0; i < shares.length; i++) {
 				if (newShareArr[i] == undefined) newShareArr[i] = "";
-				newShareArr[i] = React.createElement(ShareBox, { num: i + 1, share: shares[i] });
+				newShareArr[i] = React.createElement(ShareBox, { num: i + 1, key: idx, share: shares[i] });
+				idx += 1;
 			}
-			_this2.setState({ shareArr: newShareArr }, function () {
+			_this2.setState({ shareArr: newShareArr, index: idx }, function () {
 				console.log(_this2.state.shareArr);
 			});
 		};
@@ -204,23 +207,17 @@ var Share = function (_React$Component2) {
 			});
 		};
 
-		_this2.both = function (event) {
-			console.log(event.keyCode);
-			_this2.clearShareArray();
-			/*if (event.keyCode == 8) {
-   	this.clearShareArray();
-   }*/
+		_this2.handleKey = function (event) {
 			if (event.keyCode == 13) {
-				{
-					_this2.clearShareArray;
-				}
+				_this2.clearShareArray();
 				_this2.sub();
 			}
 		};
 
 		_this2.state = {
 			share: "S/hare",
-			shareArr: []
+			shareArr: [],
+			index: 0
 		};
 		_this2.clearShareArray = _this2.clearShareArray.bind(_this2);
 		return _this2;
@@ -236,7 +233,7 @@ var Share = function (_React$Component2) {
 				React.createElement(
 					'div',
 					{ id: 'secretsubContainer' },
-					React.createElement('input', { type: 'text', id: 'secretsub', onKeyDown: this.both, placeholder: 'enter secret here' })
+					React.createElement('input', { type: 'text', id: 'secretsub', onKeyDown: this.handleKey, placeholder: 'enter secret here' })
 				),
 				React.createElement(
 					'div',

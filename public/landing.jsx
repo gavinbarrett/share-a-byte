@@ -93,7 +93,7 @@ function ShareHeader(props) {
 
 function ShareHeaderContainer(props) {
 	return(<React.Fragment>
-		<div class="shareRecoverHeaderContainer">
+		<div className="shareRecoverHeaderContainer">
 		<ShareHeader share={props.share}/>
 		<input type="text" id="shareNumInput" placeholder="enter number of shares here"></input>
 		<input type="text" id="threshold" placeholder="enter the threshold here"></input>
@@ -111,8 +111,8 @@ function shareSecret() {
 }
 
 function ShareBox(props) {
-		return(<div>
-		<textarea className="shareBox" key={props.num}>{props.num + " " + props.share}</textarea>
+		return(<div className="shareBoxContainer">
+		<textarea className="shareBox" key={props.key}>{props.num + " " + props.share}</textarea>
 		</div>);
 }
 
@@ -122,11 +122,13 @@ class Share extends React.Component {
 		this.state = {
 			share: "S/hare",
 			shareArr: [],
+			index: 0,
 		};
 		this.clearShareArray = this.clearShareArray.bind(this);
 	}
 
 		sub = () => {
+				console.log('subbing');
 				let n = document.getElementById('shareNumInput');
 				let t = document.getElementById('threshold');
 				if (!n || !t) {
@@ -140,12 +142,14 @@ class Share extends React.Component {
 		outputShares = (shares) => {
 			/* output shares to the screen */
 			let newShareArr = [];
+			let idx = this.state.index;
 			for (let i = 0; i < shares.length; i++) {
 						if (newShareArr[i] == undefined)
 								newShareArr[i] = "";
-						newShareArr[i] = (<ShareBox num={i+1} share={shares[i]}/>);
+						newShareArr[i] = (<ShareBox num={i+1} key={idx} share={shares[i]}/>);
+						idx += 1;
 			}
-			this.setState({shareArr: newShareArr}, () => {console.log(this.state.shareArr)});
+			this.setState({shareArr: newShareArr, index: idx}, () => {console.log(this.state.shareArr)});
 		};
 
 		clearShareArray = () => {
@@ -157,13 +161,8 @@ class Share extends React.Component {
 		};
 
 		handleKey = (event) => {
-				console.log(event.keyCode);
-				this.clearShareArray();
-				/*if (event.keyCode == 8) {
-					this.clearShareArray();
-				}*/	
 				if (event.keyCode == 13) {
-					{this.clearShareArray}
+					this.clearShareArray();
 					this.sub();
 				}
 		};

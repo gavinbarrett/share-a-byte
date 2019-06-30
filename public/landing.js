@@ -171,17 +171,15 @@ var Share = function (_React$Component2) {
 
 		var _this2 = _possibleConstructorReturn(this, (Share.__proto__ || Object.getPrototypeOf(Share)).call(this, proper));
 
-		_this2.sub = function (event) {
-			if (event.charCode == 13) {
-				var n = document.getElementById('shareNumInput');
-				var t = document.getElementById('threshold');
-				if (!n || !t) {
-					alert('please add proper fields');
-					return;
-				}
-				var shares = shareSecret();
-				_this2.outputShares(shares);
+		_this2.sub = function () {
+			var n = document.getElementById('shareNumInput');
+			var t = document.getElementById('threshold');
+			if (!n || !t) {
+				alert('please add proper fields');
+				return;
 			}
+			var shares = shareSecret();
+			_this2.outputShares(shares);
 		};
 
 		_this2.outputShares = function (shares) {
@@ -206,6 +204,20 @@ var Share = function (_React$Component2) {
 			});
 		};
 
+		_this2.both = function (event) {
+			console.log(event.keyCode);
+			_this2.clearShareArray();
+			/*if (event.keyCode == 8) {
+   	this.clearShareArray();
+   }*/
+			if (event.keyCode == 13) {
+				{
+					_this2.clearShareArray;
+				}
+				_this2.sub();
+			}
+		};
+
 		_this2.state = {
 			share: "S/hare",
 			shareArr: []
@@ -224,7 +236,7 @@ var Share = function (_React$Component2) {
 				React.createElement(
 					'div',
 					{ id: 'secretsubContainer' },
-					React.createElement('input', { type: 'text', id: 'secretsub', onKeyPress: this.sub, placeholder: 'enter secret here' })
+					React.createElement('input', { type: 'text', id: 'secretsub', onKeyDown: this.both, placeholder: 'enter secret here' })
 				),
 				React.createElement(
 					'div',
@@ -367,7 +379,15 @@ function RecoverSecret(props) {
 }
 
 function Output(props) {
-	return React.createElement('div', { id: 'output' });
+	return React.createElement('div', { id: 'secout' });
+}
+
+function SecOut(props) {
+	return React.createElement(
+		'div',
+		{ id: 'output' },
+		props.sec
+	);
 }
 
 var Recover = function (_React$Component4) {
@@ -377,6 +397,12 @@ var Recover = function (_React$Component4) {
 		_classCallCheck(this, Recover);
 
 		var _this4 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
+
+		_this4.showOut = function (secret) {
+			_this4.setState({
+				out: React.createElement(SecOut, { sec: secret })
+			});
+		};
 
 		_this4.triggerRecovery = function () {
 			/* call recovery function on input shares */
@@ -390,8 +416,9 @@ var Recover = function (_React$Component4) {
 				ys.push(_this4.state.data[i].slice(2));
 			}
 			var secret = recover(xs, ys);
-			var out = document.getElementById('output');
-			out.textContent = secret;
+			_this4.showOut(secret);
+			/*let out = document.getElementById('output');
+   out.textContent = secret;*/
 		};
 
 		_this4.clearArray = function () {
@@ -405,7 +432,8 @@ var Recover = function (_React$Component4) {
 			recover: "/Recover",
 			query: "enter the number of shares",
 			fields: [],
-			data: []
+			data: [],
+			out: undefined
 		};
 		_this4.clearArray = _this4.clearArray.bind(_this4);
 		_this4.addItems = _this4.addItems.bind(_this4);
@@ -454,10 +482,11 @@ var Recover = function (_React$Component4) {
 					} }),
 				React.createElement(
 					'div',
-					{ id: 'fieldContainer:' },
+					{ id: 'fieldContainer' },
 					this.state.fields,
-					React.createElement(RecoverSecret, { name: 'Recover Secret', func: this.triggerRecovery }),
-					React.createElement(Output, null)
+					React.createElement(RecoverSecret, { name: 'Recover!', func: this.triggerRecovery }),
+					React.createElement(Output, null),
+					this.state.out
 				)
 			);
 		}

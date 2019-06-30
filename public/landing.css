@@ -59,7 +59,6 @@ html, body {
 }
 
 
-
 .shareRecoverHeader {
 	font-size: 20vw;
 	color: white;
@@ -142,6 +141,7 @@ html, body {
 }
 
 #share-outputContainer {
+	align-content: flex-start;
 	display: flex;
 	width: 100vw;
 	justify-content: center;
@@ -174,9 +174,18 @@ html, body {
 	justify-content: center;
 	align-items: center;
 	flex-grow: 1;
+	position: relative;
 }
 
 #recoverButton {
+	background-color: #add8e6;
+	width: 20vw;
+	border-style: none;
+	height: 6vh;
+	border-radius: 50px;
+	font-size: 75%;
+	color: white;
+	margin-top: 3%;
 }
 
 #recoverButtonWrapper {
@@ -190,4 +199,8 @@ html, body {
 	justify-content: center;
 	align-items: center;
 	color: white;
+	background-color: black;
+	height: 100%;
+	position: absolute;
 }
+

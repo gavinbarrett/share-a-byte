@@ -273,29 +273,33 @@ function RecoverSecret(props) {
 	</div>);
 }
 
-function Output(props) {
-	return(<div id="secout">
-	</div>);
-}
-
 class SecOut extends React.Component {
 	constructor(props) {
 		super(props);
 	  	this.state = {
 			secret: props.sec,
-			scroll: props.scroll,
+			scrollUp: props.scrollUp,
+			scrollDown: props.scrollDown,
+			present: props.present,
 		};
 	}
 
 
 	componentDidMount() {
-		this.state.scroll();
+		this.state.scrollUp();
 	}
 
 	render() {
 	  return(<div id="output" className="showOutput">
-	  <div className="close"></div>
+	  <div className="close" onClick={this.state.scrollDown}></div>
+	  <div id="presentedContainer">
+	  <div id="present">
+	  {this.state.present}
+	  </div>
+	  <div id="presentedSecret">
 	  {this.state.secret}
+	  </div>
+	  </div>
 	  </div>);
 	}
 }
@@ -306,6 +310,7 @@ class Recover extends React.Component {
 		this.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
+			secret: "the recovered secret is:",
 			fields: [],
 			data: [],
 			out: undefined,
@@ -329,7 +334,7 @@ class Recover extends React.Component {
 	};
 
 	showOut = (secret) => {
-		let newSec = <SecOut sec={secret} scroll={this.scrollUp}/>;
+		let newSec = <SecOut sec={secret} scrollUp={this.scrollUp} scrollDown={this.scrollDown} present={this.state.secret}/>;
 		this.setState({
 			out: newSec,
 		}, () => { console.log(this.state.out) });
@@ -348,14 +353,18 @@ class Recover extends React.Component {
 		/* call recovery function on input shares */
 			let xs = [];
 			let ys = [];
-			this.state.data.shift();
+			if (this.state.data[0] == undefined)
+				this.state.data.shift();
 			for (let i = 0; i < this.state.data.length; i++) {
 				// save xs component
 				xs.push(this.state.data[i][0]);
 				// save ys component
 				ys.push(this.state.data[i].slice(2));
 			}
+			console.log(xs);
+			console.log(ys);
 			let secret = recover(xs, ys);
+			console.log(secret);
 			this.showOut(secret);
 	};
 	
@@ -378,11 +387,15 @@ class Recover extends React.Component {
         };
 
 	scrollDown = () => {
-
+		let element = document.getElementById("output");
+		element.classList.toggle('scrollDown');
+		setTimeout(this.cleanSecret(), 1000);
 	};
 
 	cleanSecret = () => {
-
+		this.setState({
+			out: undefined,
+		});
 	};
 
 
@@ -393,7 +406,6 @@ class Recover extends React.Component {
 		<div id="fieldContainer">
 		{this.state.fields}
 		<RecoverSecret name="Recover!" func={this.showAnimation}/>
-		<Output />
 		</div>
 		<div id="outContainer">
 		{this.state.out}

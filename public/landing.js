@@ -385,10 +385,6 @@ function RecoverSecret(props) {
 	);
 }
 
-function Output(props) {
-	return React.createElement('div', { id: 'secout' });
-}
-
 var SecOut = function (_React$Component4) {
 	_inherits(SecOut, _React$Component4);
 
@@ -399,7 +395,9 @@ var SecOut = function (_React$Component4) {
 
 		_this4.state = {
 			secret: props.sec,
-			scroll: props.scroll
+			scrollUp: props.scrollUp,
+			scrollDown: props.scrollDown,
+			present: props.present
 		};
 		return _this4;
 	}
@@ -407,7 +405,7 @@ var SecOut = function (_React$Component4) {
 	_createClass(SecOut, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			this.state.scroll();
+			this.state.scrollUp();
 		}
 	}, {
 		key: 'render',
@@ -415,8 +413,21 @@ var SecOut = function (_React$Component4) {
 			return React.createElement(
 				'div',
 				{ id: 'output', className: 'showOutput' },
-				React.createElement('div', { className: 'close' }),
-				this.state.secret
+				React.createElement('div', { className: 'close', onClick: this.state.scrollDown }),
+				React.createElement(
+					'div',
+					{ id: 'presentedContainer' },
+					React.createElement(
+						'div',
+						{ id: 'present' },
+						this.state.present
+					),
+					React.createElement(
+						'div',
+						{ id: 'presentedSecret' },
+						this.state.secret
+					)
+				)
 			);
 		}
 	}]);
@@ -433,7 +444,7 @@ var Recover = function (_React$Component5) {
 		var _this5 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
 
 		_this5.showOut = function (secret) {
-			var newSec = React.createElement(SecOut, { sec: secret, scroll: _this5.scrollUp });
+			var newSec = React.createElement(SecOut, { sec: secret, scrollUp: _this5.scrollUp, scrollDown: _this5.scrollDown, present: _this5.state.secret });
 			_this5.setState({
 				out: newSec
 			}, function () {
@@ -445,14 +456,17 @@ var Recover = function (_React$Component5) {
 			/* call recovery function on input shares */
 			var xs = [];
 			var ys = [];
-			_this5.state.data.shift();
+			if (_this5.state.data[0] == undefined) _this5.state.data.shift();
 			for (var i = 0; i < _this5.state.data.length; i++) {
 				// save xs component
 				xs.push(_this5.state.data[i][0]);
 				// save ys component
 				ys.push(_this5.state.data[i].slice(2));
 			}
+			console.log(xs);
+			console.log(ys);
 			var secret = recover(xs, ys);
+			console.log(secret);
 			_this5.showOut(secret);
 		};
 
@@ -474,13 +488,22 @@ var Recover = function (_React$Component5) {
 			element.classList.toggle('showOutput');
 		};
 
-		_this5.scrollDown = function () {};
+		_this5.scrollDown = function () {
+			var element = document.getElementById("output");
+			element.classList.toggle('scrollDown');
+			setTimeout(_this5.cleanSecret(), 1000);
+		};
 
-		_this5.cleanSecret = function () {};
+		_this5.cleanSecret = function () {
+			_this5.setState({
+				out: undefined
+			});
+		};
 
 		_this5.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
+			secret: "the recovered secret is:",
 			fields: [],
 			data: [],
 			out: undefined
@@ -534,8 +557,7 @@ var Recover = function (_React$Component5) {
 					'div',
 					{ id: 'fieldContainer' },
 					this.state.fields,
-					React.createElement(RecoverSecret, { name: 'Recover!', func: this.showAnimation }),
-					React.createElement(Output, null)
+					React.createElement(RecoverSecret, { name: 'Recover!', func: this.showAnimation })
 				),
 				React.createElement(
 					'div',

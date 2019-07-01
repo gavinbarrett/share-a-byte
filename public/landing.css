@@ -275,6 +275,32 @@ textarea {
 	justify-content: center;
 }
 
+#present {
+	height: 10vh;
+	width: 60vw;
+	font-size: 100%;
+	font-family: Inconsolata;
+	text-align: center;
+	color: #09347a;
+
+}
+
+#presentedContainer {
+	height: 70vh;
+	display: flex;
+	flex-direction: column;
+	vertical-align: center;
+	justify-content: center;
+}
+
+#presentedSecret {
+	height: 10vh;
+	width: 60vw;
+	font-size: 100%;
+	font-family: Inconsolata;
+	text-align: center;
+}
+
 .close {
   position: absolute;
   right: 32px;
@@ -300,4 +326,3 @@ textarea {
 .close:after {
   transform: rotate(-45deg);
 }
-

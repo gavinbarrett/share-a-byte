@@ -170,6 +170,13 @@ textarea {
         text-align: center;
 }
 
+.shareInputHelper {
+	display: flex;
+	justify-content: flex-start;
+	color: #add8e6;
+	font-family: Inconsolata;
+}
+
 #shareNum {
 	padding: 2px;
 }
@@ -200,6 +207,41 @@ textarea {
 	font-size: 75%;
 	color: white;
 	margin-top: 3%;
+
+	animation-name: scroll;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+#recoverButton:hover {
+	color: #09347a;
+}
+
+.scrollUpHidden {
+	display: hidden;
+}
+
+.scrollUp {
+	display: flex;
+	animation-name: scrollUp;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+.scrollDown {
+	animation-name: scrollDown;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes scrollUp {
+	from { top: 100%; }
+	to { top: 5%; }
+}
+
+@keyframes scrollDown {
+	from { top: 0%; }
+	to { top: 100%; }
 }
 
 #recoverButtonWrapper {
@@ -208,13 +250,54 @@ textarea {
 	align-items: center;
 }
 
+.showOutput {
+	display: none;
+}
+
+.glyphicons {
+	color: black;
+}
+
 #output {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: white;
-	background-color: black;
-	height: 100%;
+	color: black;
+	background-color: white;
+	height: 90vh;
+	width: 90vw;
+	flex: 1;
 	position: absolute;
+	border-radius: 15px;
+}
+#outContainer {
+	display: flex;
+	justify-content: center;
+}
+
+.close {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
 }
 

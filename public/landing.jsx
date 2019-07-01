@@ -95,7 +95,13 @@ function ShareHeaderContainer(props) {
 	return(<React.Fragment>
 		<div className="shareRecoverHeaderContainer">
 		<ShareHeader share={props.share}/>
+		<div className="shareInputHelper">
+		{props.num}
+		</div>
 		<input type="text" id="shareNumInput" placeholder="enter number of shares here"></input>
+		<div className="shareInputHelper">
+		{props.thr}
+		</div>
 		<input type="text" id="threshold" placeholder="enter the threshold here"></input>
 		</div>
 	</React.Fragment>);
@@ -169,7 +175,7 @@ class Share extends React.Component {
 
 	render() {
 	return(<React.Fragment>
-	<ShareHeaderContainer share={this.state.share}/>
+	<ShareHeaderContainer share={this.state.share} num={"enter the desired number of shares"} thr={"enter the desires number to recover the secret"}/>
 	<div id="secretsubContainer">
 	<input type="text" id="secretsub" onKeyDown={this.handleKey} placeholder="enter secret here"></input></div>
 	<div id="share-outputContainer">
@@ -272,10 +278,26 @@ function Output(props) {
 	</div>);
 }
 
-function SecOut(props) {
-	return(<div id="output">
-	{props.sec}
-	</div>);
+class SecOut extends React.Component {
+	constructor(props) {
+		super(props);
+	  	this.state = {
+			secret: props.sec,
+			scroll: props.scroll,
+		};
+	}
+
+
+	componentDidMount() {
+		this.state.scroll();
+	}
+
+	render() {
+	  return(<div id="output" className="showOutput">
+	  <div className="close"></div>
+	  {this.state.secret}
+	  </div>);
+	}
 }
 
 class Recover extends React.Component {
@@ -304,12 +326,13 @@ class Recover extends React.Component {
 		index++;
 		array.push(<Node grabFields={this.updateFields} key={index} k={index}/>);
 		this.addItems(index, array);
-	}
+	};
 
 	showOut = (secret) => {
+		let newSec = <SecOut sec={secret} scroll={this.scrollUp}/>;
 		this.setState({
-			out: <SecOut sec={secret}/>,
-		});
+			out: newSec,
+		}, () => { console.log(this.state.out) });
 	};
 
 	updateFields(event) {
@@ -319,8 +342,8 @@ class Recover extends React.Component {
 			newArr[index] = "";
 		newArr[index] = event.target.value;
 		this.setState({data: newArr});
-	}
-
+	};
+	
 	triggerRecovery = () => {
 		/* call recovery function on input shares */
 			let xs = [];
@@ -334,9 +357,11 @@ class Recover extends React.Component {
 			}
 			let secret = recover(xs, ys);
 			this.showOut(secret);
-			/*let out = document.getElementById('output');
-			out.textContent = secret;*/
-	}
+	};
+	
+	showAnimation = () => {
+		this.triggerRecovery();
+	};
 
 	clearArray = () => {
 		/* clear the field array */
@@ -344,6 +369,22 @@ class Recover extends React.Component {
 			fields: [],
 		});
 	};
+	
+	scrollUp = () => {
+                console.log("scrolling");
+                let element = document.getElementById("output");
+                element.classList.toggle('scrollUp');
+                element.classList.toggle('showOutput');
+        };
+
+	scrollDown = () => {
+
+	};
+
+	cleanSecret = () => {
+
+	};
+
 
 	render() {
 		return(<React.Fragment>
@@ -351,8 +392,10 @@ class Recover extends React.Component {
 		<ShareQueryContainer query={this.state.query} up={this.updateValue} func={() => { this.addItems(0,[]) }} clear={() => { this.clearArray() }}/>
 		<div id="fieldContainer">
 		{this.state.fields}
-		<RecoverSecret name="Recover!" func={this.triggerRecovery}/>
+		<RecoverSecret name="Recover!" func={this.showAnimation}/>
 		<Output />
+		</div>
+		<div id="outContainer">
 		{this.state.out}
 		</div>
 		</React.Fragment>);

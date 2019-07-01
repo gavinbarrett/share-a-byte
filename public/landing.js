@@ -136,7 +136,17 @@ function ShareHeaderContainer(props) {
 			'div',
 			{ className: 'shareRecoverHeaderContainer' },
 			React.createElement(ShareHeader, { share: props.share }),
+			React.createElement(
+				'div',
+				{ className: 'shareInputHelper' },
+				props.num
+			),
 			React.createElement('input', { type: 'text', id: 'shareNumInput', placeholder: 'enter number of shares here' }),
+			React.createElement(
+				'div',
+				{ className: 'shareInputHelper' },
+				props.thr
+			),
 			React.createElement('input', { type: 'text', id: 'threshold', placeholder: 'enter the threshold here' })
 		)
 	);
@@ -229,7 +239,7 @@ var Share = function (_React$Component2) {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement(ShareHeaderContainer, { share: this.state.share }),
+				React.createElement(ShareHeaderContainer, { share: this.state.share, num: "enter the desired number of shares", thr: "enter the desires number to recover the secret" }),
 				React.createElement(
 					'div',
 					{ id: 'secretsubContainer' },
@@ -379,63 +389,106 @@ function Output(props) {
 	return React.createElement('div', { id: 'secout' });
 }
 
-function SecOut(props) {
-	return React.createElement(
-		'div',
-		{ id: 'output' },
-		props.sec
-	);
-}
+var SecOut = function (_React$Component4) {
+	_inherits(SecOut, _React$Component4);
 
-var Recover = function (_React$Component4) {
-	_inherits(Recover, _React$Component4);
+	function SecOut(props) {
+		_classCallCheck(this, SecOut);
+
+		var _this4 = _possibleConstructorReturn(this, (SecOut.__proto__ || Object.getPrototypeOf(SecOut)).call(this, props));
+
+		_this4.state = {
+			secret: props.sec,
+			scroll: props.scroll
+		};
+		return _this4;
+	}
+
+	_createClass(SecOut, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.state.scroll();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				'div',
+				{ id: 'output', className: 'showOutput' },
+				React.createElement('div', { className: 'close' }),
+				this.state.secret
+			);
+		}
+	}]);
+
+	return SecOut;
+}(React.Component);
+
+var Recover = function (_React$Component5) {
+	_inherits(Recover, _React$Component5);
 
 	function Recover(props) {
 		_classCallCheck(this, Recover);
 
-		var _this4 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
+		var _this5 = _possibleConstructorReturn(this, (Recover.__proto__ || Object.getPrototypeOf(Recover)).call(this, props));
 
-		_this4.showOut = function (secret) {
-			_this4.setState({
-				out: React.createElement(SecOut, { sec: secret })
+		_this5.showOut = function (secret) {
+			var newSec = React.createElement(SecOut, { sec: secret, scroll: _this5.scrollUp });
+			_this5.setState({
+				out: newSec
+			}, function () {
+				console.log(_this5.state.out);
 			});
 		};
 
-		_this4.triggerRecovery = function () {
+		_this5.triggerRecovery = function () {
 			/* call recovery function on input shares */
 			var xs = [];
 			var ys = [];
-			_this4.state.data.shift();
-			for (var i = 0; i < _this4.state.data.length; i++) {
+			_this5.state.data.shift();
+			for (var i = 0; i < _this5.state.data.length; i++) {
 				// save xs component
-				xs.push(_this4.state.data[i][0]);
+				xs.push(_this5.state.data[i][0]);
 				// save ys component
-				ys.push(_this4.state.data[i].slice(2));
+				ys.push(_this5.state.data[i].slice(2));
 			}
 			var secret = recover(xs, ys);
-			_this4.showOut(secret);
-			/*let out = document.getElementById('output');
-   out.textContent = secret;*/
+			_this5.showOut(secret);
 		};
 
-		_this4.clearArray = function () {
+		_this5.showAnimation = function () {
+			_this5.triggerRecovery();
+		};
+
+		_this5.clearArray = function () {
 			/* clear the field array */
-			_this4.setState({
+			_this5.setState({
 				fields: []
 			});
 		};
 
-		_this4.state = {
+		_this5.scrollUp = function () {
+			console.log("scrolling");
+			var element = document.getElementById("output");
+			element.classList.toggle('scrollUp');
+			element.classList.toggle('showOutput');
+		};
+
+		_this5.scrollDown = function () {};
+
+		_this5.cleanSecret = function () {};
+
+		_this5.state = {
 			recover: "/Recover",
 			query: "enter the number of shares",
 			fields: [],
 			data: [],
 			out: undefined
 		};
-		_this4.clearArray = _this4.clearArray.bind(_this4);
-		_this4.addItems = _this4.addItems.bind(_this4);
-		_this4.updateFields = _this4.updateFields.bind(_this4);
-		return _this4;
+		_this5.clearArray = _this5.clearArray.bind(_this5);
+		_this5.addItems = _this5.addItems.bind(_this5);
+		_this5.updateFields = _this5.updateFields.bind(_this5);
+		return _this5;
 	}
 
 	_createClass(Recover, [{
@@ -466,23 +519,27 @@ var Recover = function (_React$Component4) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this5 = this;
+			var _this6 = this;
 
 			return React.createElement(
 				React.Fragment,
 				null,
 				React.createElement(RecoverHeaderContainer, { recover: this.state.recover, onClick: this.grabFields }),
 				React.createElement(ShareQueryContainer, { query: this.state.query, up: this.updateValue, func: function func() {
-						_this5.addItems(0, []);
+						_this6.addItems(0, []);
 					}, clear: function clear() {
-						_this5.clearArray();
+						_this6.clearArray();
 					} }),
 				React.createElement(
 					'div',
 					{ id: 'fieldContainer' },
 					this.state.fields,
-					React.createElement(RecoverSecret, { name: 'Recover!', func: this.triggerRecovery }),
-					React.createElement(Output, null),
+					React.createElement(RecoverSecret, { name: 'Recover!', func: this.showAnimation }),
+					React.createElement(Output, null)
+				),
+				React.createElement(
+					'div',
+					{ id: 'outContainer' },
 					this.state.out
 				)
 			);

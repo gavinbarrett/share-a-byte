@@ -167,8 +167,8 @@ function shareSecret() {
 
 function ShareBox(props) {
 	return React.createElement(
-		motion.div,
-		{ animate: { rotate: 360 }, transition: { duration: 2 }, className: 'shareBoxContainer' },
+		'div',
+		{ className: 'shareBoxContainer' },
 		React.createElement(
 			'textarea',
 			{ className: 'shareBox', key: props.key },
@@ -198,6 +198,10 @@ var Share = function (_React$Component2) {
 		};
 
 		_this2.outputShares = function (shares) {
+			var out = document.getElementById('share-outputContainer');
+			out.classList.toggle('hide');
+			out.classList.toggle('show');
+
 			/* output shares to the screen */
 			var newShareArr = [];
 			var idx = _this2.state.index;
@@ -251,7 +255,7 @@ var Share = function (_React$Component2) {
 				),
 				React.createElement(
 					'div',
-					{ id: 'share-outputContainer' },
+					{ id: 'share-outputContainer', className: 'hide' },
 					React.createElement(
 						'div',
 						{ id: 'share-output' },

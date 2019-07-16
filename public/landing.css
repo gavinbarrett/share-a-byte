@@ -136,7 +136,15 @@ html, body {
 	justify-content: center;
 	flex-direction: column;
 	align-items: center;
-	height: 60vh;
+	height: 65vh;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: flex;
 }
 
 #shareHeaderContainer {
@@ -213,7 +221,6 @@ html, body {
 
 #share-outputContainer {
 	align-content: flex-start;
-	display: flex;
 	width: 100vw;
 	justify-content: center;
 }
@@ -244,6 +251,7 @@ textarea {
 	justify-content: flex-start;
 	color: #add8e6;
 	font-family: Inconsolata;
+	font-size: 2.5vw;
 }
 
 #shareNum {

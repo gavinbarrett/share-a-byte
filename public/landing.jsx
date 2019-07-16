@@ -117,9 +117,9 @@ function shareSecret() {
 }
 
 function ShareBox(props) {
-		return(<motion.div animate={{ rotate: 360 }} transition={{ duration: 2 }}className="shareBoxContainer">
+		return(<div className="shareBoxContainer">
 		<textarea className="shareBox" key={props.key}>{props.num + " " + props.share}</textarea>
-		</motion.div>);
+		</div>);
 }
 
 class Share extends React.Component {
@@ -146,6 +146,10 @@ class Share extends React.Component {
 		};
 
 		outputShares = (shares) => {
+			let out = document.getElementById('share-outputContainer');
+			out.classList.toggle('hide');
+			out.classList.toggle('show');
+
 			/* output shares to the screen */
 			let newShareArr = [];
 			let idx = this.state.index;
@@ -178,7 +182,7 @@ class Share extends React.Component {
 	<ShareHeaderContainer id="shareHeaderContainer" share={this.state.share} num={"enter the desired number of shares"} thr={"enter the desires number to recover the secret"}/>
 	<div id="secretsubContainer">
 	<input type="text" id="secretsub" onKeyDown={this.handleKey} placeholder="enter secret here"></input></div>
-	<div id="share-outputContainer">
+	<div id="share-outputContainer" className="hide">
 	<div id="share-output">
 	{this.state.shareArr}
 	</div>

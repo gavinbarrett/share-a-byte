@@ -4,6 +4,5 @@ const app = express();
 
 app.use(express.static('public'));
 
-app.listen(5555, () => {
-	console.log('Listening on port 5555');
-});
+/* Listen on either assigned port or port 5000 */
+app.listen(process.env.PORT || 5000);

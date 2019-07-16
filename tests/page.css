@@ -1,0 +1,17 @@
+html, body {
+	height: vh;
+	width: vw;
+	background-color: orange;
+}
+
+#back {
+	height: 50%;
+	width: 50%;
+	background-color: magenta;
+}
+
+#wrap {
+	height: 50%;
+	width: 50%;
+	background-color: violet;
+}

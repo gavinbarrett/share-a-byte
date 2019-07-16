@@ -7,20 +7,36 @@ html, body {
         background-attachment: fixed;
 }
 
-#heading {
-	color: white;
-	font-family: Inconsolata;
+#headingWrap {
+        width: 100%;
+        height: 100vh;
+        color: white;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+	text-align: center;
+        font-family: Inconsolata;
+        align-items: middle;
+}
+
+.headings {
+	
 }
 
 #subheader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 30vh;
 	color: #000080;
 	font-family: Inconsolata;
-	font-size: 3vw;
+	font-size: 4vw;
 }
 
 #headingContainer {
-	height: 30vw;
-	font-size: 8vw;
+	height: 30vh;
+	font-size: 12vw;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -29,10 +45,10 @@ html, body {
 
 .button {
 	height: 20%;
-	width: 30%;
+	width: 40%;
 	display: flex;
 	font-family: Inconsolata;
-	font-size: 60%;
+	font-size: 100%;
 	text-align: center;
 	vertical-align: middle;
 	justify-content: center;
@@ -42,9 +58,10 @@ html, body {
 	border-radius: 50px;
 }
 
+
 #selectionBox {
-	width: 50vw;
-	height: 30vh;
+	width: 70vw;
+	height: 50vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
@@ -53,9 +70,56 @@ html, body {
 	border-radius: 15px;
 }
 
+@media screen and (max-width: 770px) {
+#selectionBox {
+	width: 70%;
+	height: 70%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	background-color: white;
+	border-radius: 15px;
+}
+
+#headingWrap {
+        width: 100%;
+        height: 100vh;
+        color: white;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        font-family: Inconsolata;
+	font-size: 135%;
+        align-items: middle;
+}
+
+#subheader {
+        display: flex;
+        justify-content: center;
+        align-items: space-between;
+        width: 100%;
+        height: 20vh;
+        color: #000080;
+        font-family: Inconsolata;
+        font-size: 4vw;
+}
+
+}
+
+@media screen and (max-height: 299px) {
+	#headingWrap {
+		font-size: 100%;
+		display: flex;
+		flex-direction: row;
+	}	
+}
+
 #selectionBoxContainer {
 	display: flex;
 	justify-content: center;
+	height: 60vh;
+	align-items: center;
 }
 
 
@@ -63,6 +127,7 @@ html, body {
 	font-size: 20vw;
 	color: white;
 	opacity: 0.5;
+	height: 100%;
 	font-family: Inconsolata;
 }
 
@@ -71,7 +136,11 @@ html, body {
 	justify-content: center;
 	flex-direction: column;
 	align-items: center;
-	height: 30vw;
+	height: 60vh;
+}
+
+#shareHeaderContainer {
+	height: 100vh;
 }
 
 #shareNumInput {
@@ -270,6 +339,7 @@ textarea {
 	position: absolute;
 	border-radius: 15px;
 }
+
 #outContainer {
 	display: flex;
 	justify-content: center;
@@ -282,7 +352,6 @@ textarea {
 	font-family: Inconsolata;
 	text-align: center;
 	color: #09347a;
-
 }
 
 #presentedContainer {

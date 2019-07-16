@@ -8,11 +8,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 import { share } from './share.js';
 import { recover } from './recover.js';
-
 /* Below is code for the landing page */
 
 function Heading() {
-	return React.createElement('div', { id: 'heading' });
+	return React.createElement(
+		'div',
+		{ id: 'headingWrap' },
+		React.createElement('div', { id: 'heading1' }),
+		React.createElement('div', { id: 'heading2' })
+	);
 }
 
 function Subheader(props) {
@@ -163,8 +167,8 @@ function shareSecret() {
 
 function ShareBox(props) {
 	return React.createElement(
-		'div',
-		{ className: 'shareBoxContainer' },
+		motion.div,
+		{ animate: { rotate: 360 }, transition: { duration: 2 }, className: 'shareBoxContainer' },
 		React.createElement(
 			'textarea',
 			{ className: 'shareBox', key: props.key },
@@ -239,7 +243,7 @@ var Share = function (_React$Component2) {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement(ShareHeaderContainer, { share: this.state.share, num: "enter the desired number of shares", thr: "enter the desires number to recover the secret" }),
+				React.createElement(ShareHeaderContainer, { id: 'shareHeaderContainer', share: this.state.share, num: "enter the desired number of shares", thr: "enter the desires number to recover the secret" }),
 				React.createElement(
 					'div',
 					{ id: 'secretsubContainer' },
@@ -335,18 +339,18 @@ var ShareNum = function (_React$Component3) {
 		var _this3 = _possibleConstructorReturn(this, (ShareNum.__proto__ || Object.getPrototypeOf(ShareNum)).call(this, props));
 
 		_this3.num = function (event) {
-			var x = document.getElementById('shareNum').value;
+			var number = document.getElementById('shareNum').value;
 			if (event.charCode) {
 				return;
 			}
-			if (!x) {
+			if (!number) {
 				props.clear();
 				return;
 			}
-			if (!isNaN(x) /*&& x != ""*/) {
-					props.clear();
-					props.func(0, []);
-				}
+			if (!isNaN(number)) {
+				props.clear();
+				props.func(0, []);
+			}
 		};
 		return _this3;
 	}
@@ -463,15 +467,12 @@ var Recover = function (_React$Component5) {
 				// save ys component
 				ys.push(_this5.state.data[i].slice(2));
 			}
-			console.log(xs);
-			console.log(ys);
+			if (xs.length != _this5.state.fields.length || ys.length != _this5.state.fields.length) {
+				console.log('yo');
+				return;
+			}
 			var secret = recover(xs, ys);
-			console.log(secret);
 			_this5.showOut(secret);
-		};
-
-		_this5.showAnimation = function () {
-			_this5.triggerRecovery();
 		};
 
 		_this5.clearArray = function () {
@@ -491,7 +492,7 @@ var Recover = function (_React$Component5) {
 		_this5.scrollDown = function () {
 			var element = document.getElementById("output");
 			element.classList.toggle('scrollDown');
-			setTimeout(_this5.cleanSecret(), 1000);
+			_this5.cleanSecret();
 		};
 
 		_this5.cleanSecret = function () {
@@ -557,7 +558,7 @@ var Recover = function (_React$Component5) {
 					'div',
 					{ id: 'fieldContainer' },
 					this.state.fields,
-					React.createElement(RecoverSecret, { name: 'Recover!', func: this.showAnimation })
+					React.createElement(RecoverSecret, { name: 'Recover!', func: this.triggerRecovery })
 				),
 				React.createElement(
 					'div',

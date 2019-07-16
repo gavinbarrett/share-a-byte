@@ -1,10 +1,10 @@
 import {share} from './share.js';
 import {recover} from './recover.js';
-
 /* Below is code for the landing page */
 
 function Heading() {
-	return(<div id='heading'>
+	return(<div id='headingWrap'>
+		<div id="heading1"></div><div id="heading2"></div>
 	</div>);
 }
 
@@ -117,9 +117,9 @@ function shareSecret() {
 }
 
 function ShareBox(props) {
-		return(<div className="shareBoxContainer">
+		return(<motion.div animate={{ rotate: 360 }} transition={{ duration: 2 }}className="shareBoxContainer">
 		<textarea className="shareBox" key={props.key}>{props.num + " " + props.share}</textarea>
-		</div>);
+		</motion.div>);
 }
 
 class Share extends React.Component {
@@ -175,7 +175,7 @@ class Share extends React.Component {
 
 	render() {
 	return(<React.Fragment>
-	<ShareHeaderContainer share={this.state.share} num={"enter the desired number of shares"} thr={"enter the desires number to recover the secret"}/>
+	<ShareHeaderContainer id="shareHeaderContainer" share={this.state.share} num={"enter the desired number of shares"} thr={"enter the desires number to recover the secret"}/>
 	<div id="secretsubContainer">
 	<input type="text" id="secretsub" onKeyDown={this.handleKey} placeholder="enter secret here"></input></div>
 	<div id="share-outputContainer">
@@ -239,15 +239,15 @@ class ShareNum extends React.Component {
 	constructor(props) {
 		super(props);
 		this.num = (event) => {
-			let x = document.getElementById('shareNum').value;
+			let number = document.getElementById('shareNum').value;
 			if (event.charCode) {
 				return;
 			}
-			if (!x) {
+			if (!number) {
 				props.clear();
 				return;
 			}
-			if (!isNaN(x) /*&& x != ""*/) {
+			if (!isNaN(number)) {
 				props.clear();
 				props.func(0, []);
 			}
@@ -283,7 +283,6 @@ class SecOut extends React.Component {
 			present: props.present,
 		};
 	}
-
 
 	componentDidMount() {
 		this.state.scrollUp();
@@ -361,17 +360,14 @@ class Recover extends React.Component {
 				// save ys component
 				ys.push(this.state.data[i].slice(2));
 			}
-			console.log(xs);
-			console.log(ys);
+			if (xs.length != this.state.fields.length || ys.length != this.state.fields.length) {
+				console.log('yo');
+				return;
+	}
 			let secret = recover(xs, ys);
-			console.log(secret);
 			this.showOut(secret);
 	};
 	
-	showAnimation = () => {
-		this.triggerRecovery();
-	};
-
 	clearArray = () => {
 		/* clear the field array */
 		this.setState({
@@ -389,7 +385,7 @@ class Recover extends React.Component {
 	scrollDown = () => {
 		let element = document.getElementById("output");
 		element.classList.toggle('scrollDown');
-		setTimeout(this.cleanSecret(), 1000);
+		this.cleanSecret();
 	};
 
 	cleanSecret = () => {
@@ -405,7 +401,7 @@ class Recover extends React.Component {
 		<ShareQueryContainer query={this.state.query} up={this.updateValue} func={() => { this.addItems(0,[]) }} clear={() => { this.clearArray() }}/>
 		<div id="fieldContainer">
 		{this.state.fields}
-		<RecoverSecret name="Recover!" func={this.showAnimation}/>
+		<RecoverSecret name="Recover!" func={this.triggerRecovery}/>
 		</div>
 		<div id="outContainer">
 		{this.state.out}

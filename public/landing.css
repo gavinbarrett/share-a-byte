@@ -70,6 +70,14 @@ html, body {
 	border-radius: 15px;
 }
 
+.shareRecoverHeaderContainer {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	height: 65vh;
+}
+
 @media screen and (max-width: 770px) {
 #selectionBox {
 	width: 70%;
@@ -94,6 +102,14 @@ html, body {
         align-items: middle;
 }
 
+.shareRecoverHeaderContainer {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	height: 30vh;
+}
+
 #subheader {
         display: flex;
         justify-content: center;
@@ -106,13 +122,50 @@ html, body {
 }
 
 }
+@media screen and (max-width: 1000px) {
+.shareRecoverHeaderContainer {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	height: 45vh;
+}
+
+}
+
+@media screen and (max-width: 500px) {
+.shareRecoverHeaderContainer {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	height: 60%;
+}
+#selectionBoxContainer {
+	display: flex;
+	justify-content: center;
+	height: 40%;
+	align-items: center;
+}
+}
 
 @media screen and (max-height: 299px) {
-	#headingWrap {
-		font-size: 100%;
+	.shareRecoverHeaderContainer {
 		display: flex;
-		flex-direction: row;
-	}	
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		height: 60vh;
+	}
+	#secretsubContainer {
+		display: flex;
+		width: 100vw;
+		height: 20%;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
 }
 
 #selectionBoxContainer {
@@ -122,21 +175,12 @@ html, body {
 	align-items: center;
 }
 
-
 .shareRecoverHeader {
 	font-size: 20vw;
 	color: white;
 	opacity: 0.5;
 	height: 100%;
 	font-family: Inconsolata;
-}
-
-.shareRecoverHeaderContainer {
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-	height: 65vh;
 }
 
 .hide {
@@ -186,8 +230,6 @@ html, body {
 	justify-content: center;
 	align-items: center;
 }
-
-
 
 #shareQuery {
 	display: flex;

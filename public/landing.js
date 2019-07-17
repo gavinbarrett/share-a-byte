@@ -140,17 +140,9 @@ function ShareHeaderContainer(props) {
 			'div',
 			{ className: 'shareRecoverHeaderContainer' },
 			React.createElement(ShareHeader, { share: props.share }),
-			React.createElement(
-				'div',
-				{ className: 'shareInputHelper' },
-				props.num
-			),
+			React.createElement('div', { className: 'shareInputHelper' }),
 			React.createElement('input', { type: 'text', id: 'shareNumInput', placeholder: 'enter number of shares here' }),
-			React.createElement(
-				'div',
-				{ className: 'shareInputHelper' },
-				props.thr
-			),
+			React.createElement('div', { className: 'shareInputHelper' }),
 			React.createElement('input', { type: 'text', id: 'threshold', placeholder: 'enter the threshold here' })
 		)
 	);
@@ -247,7 +239,7 @@ var Share = function (_React$Component2) {
 			return React.createElement(
 				React.Fragment,
 				null,
-				React.createElement(ShareHeaderContainer, { id: 'shareHeaderContainer', share: this.state.share, num: "enter the desired number of shares", thr: "enter the desires number to recover the secret" }),
+				React.createElement(ShareHeaderContainer, { id: 'shareHeaderContainer', share: this.state.share }),
 				React.createElement(
 					'div',
 					{ id: 'secretsubContainer' },

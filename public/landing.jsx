@@ -96,11 +96,9 @@ function ShareHeaderContainer(props) {
 		<div className="shareRecoverHeaderContainer">
 		<ShareHeader share={props.share}/>
 		<div className="shareInputHelper">
-		{props.num}
 		</div>
 		<input type="text" id="shareNumInput" placeholder="enter number of shares here"></input>
 		<div className="shareInputHelper">
-		{props.thr}
 		</div>
 		<input type="text" id="threshold" placeholder="enter the threshold here"></input>
 		</div>
@@ -179,7 +177,7 @@ class Share extends React.Component {
 
 	render() {
 	return(<React.Fragment>
-	<ShareHeaderContainer id="shareHeaderContainer" share={this.state.share} num={"enter the desired number of shares"} thr={"enter the desires number to recover the secret"}/>
+	<ShareHeaderContainer id="shareHeaderContainer" share={this.state.share} />
 	<div id="secretsubContainer">
 	<input type="text" id="secretsub" onKeyDown={this.handleKey} placeholder="enter secret here"></input></div>
 	<div id="share-outputContainer" className="hide">

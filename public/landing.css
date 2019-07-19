@@ -432,6 +432,10 @@ textarea {
 	text-align: center;
 }
 
+::-webkit-scrollbar {
+	width: 0px;
+}
+
 .close {
   position: absolute;
   right: 32px;

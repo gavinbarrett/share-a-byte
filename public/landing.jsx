@@ -387,7 +387,9 @@ class Recover extends React.Component {
 	scrollDown = () => {
 		let element = document.getElementById("output");
 		element.classList.toggle('scrollDown');
-		this.cleanSecret();
+		setState(() => {
+			this.cleanSecret()
+		}, 1000);
 	};
 
 	cleanSecret = () => {

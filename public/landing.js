@@ -488,7 +488,9 @@ var Recover = function (_React$Component5) {
 		_this5.scrollDown = function () {
 			var element = document.getElementById("output");
 			element.classList.toggle('scrollDown');
-			_this5.cleanSecret();
+			setState(function () {
+				_this5.cleanSecret();
+			}, 1000);
 		};
 
 		_this5.cleanSecret = function () {

@@ -132,7 +132,6 @@ class Share extends React.Component {
 	}
 
 		sub = () => {
-				console.log('subbing');
 				let n = document.getElementById('shareNumInput');
 				let t = document.getElementById('threshold');
 				if (!n || !t) {
@@ -162,7 +161,6 @@ class Share extends React.Component {
 
 		clearShareArray = () => {
 				/* clear array of shares */
-				console.log('clearing...');
 				this.setState({
 					shareArr: [],
 				}, () => { console.log(this.state.shareArr) });
@@ -397,7 +395,6 @@ class Recover extends React.Component {
 			out: undefined,
 		});
 	};
-
 
 	render() {
 		return(<React.Fragment>

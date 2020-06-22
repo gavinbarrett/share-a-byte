@@ -52,6 +52,11 @@ function process_shares(a) {
 
 export function recover(xs, ys) {
 		/* recover the secret */
+		console.log('xs');
+		console.log(xs)
+		console.log('ys');
+		console.log(ys)
+
 		let shares = process_shares(ys);
 		let secret = '';
 		let field = 257;

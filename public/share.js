@@ -1,5 +1,5 @@
-import {mod} from './number.js';
-import {return_hex} from './number.js';
+import { mod } from './number.js';
+import { return_hex } from './number.js';
 
 function pad(str) {
 	/* pad a binary string to a multiple of eight */
@@ -42,17 +42,19 @@ function horners(x, k, field, poly, secret) {
 	return result;
 }
 
+function mod_field(number) {
+	return number % 257;
+}
+
 function gen_coeff(k, field) {
 	/* generate random coefficients */
-	let coeffs = [];
-	for (let i = 0; i < k-1; i++) {
-		let r = 0;
-		while (r == 0 || coeffs.includes(r)) {
-			r = Math.floor(Math.random() * field + 1);
-		}
-		coeffs.push(r);
-	}
-	return coeffs;
+
+	// create a uint8 buffer
+	let arr = new Uint8Array(k-1);
+	// get cryptographically secure bytes 
+	window.crypto.getRandomValues(arr);
+	// return the buffer as an array
+	return Array.from(arr);
 }
 
 export function share(n, k, plaintext) {
